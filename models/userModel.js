@@ -8,9 +8,9 @@ var User = (user) => {
     this.email    = user.email;
 }
 
-User.create_user = (user, result) => {
+User.create = (user, result) => {
 
-        sql.query("INSERT INTO users set ?", user, (err, res) => {
+        sql.query('INSERT INTO users (username, password, email) VALUES (?, ?, ?)', user, (err, res) => {
 
             if (err) {
                 console.error(err);
@@ -24,3 +24,5 @@ User.create_user = (user, result) => {
         })
 
 }
+
+module.exports = User;

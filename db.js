@@ -2,6 +2,8 @@
 
 var mysql = require('mysql');
 
+require('dotenv').config();
+
 let user = process.env.DBUSER;
 let password = process.env.DBPASSWORD;
 
@@ -24,3 +26,5 @@ connection.connect();
 // connection.end()
 
 // TEST CONNECTION END
+
+module.exports = connection;
