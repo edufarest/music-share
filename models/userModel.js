@@ -1,6 +1,8 @@
 'use strict';
 
-var sql = require('../db.js');
+const sql = require('../db.js');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 var User = (user) => {
     this.username = user.username;
@@ -8,9 +10,21 @@ var User = (user) => {
     this.email    = user.email;
 };
 
-User.create = (user, result) => {
+// Auth methods
 
-        sql.query('INSERT INTO users (username, password, email) VALUES (?, ?, ?)', user, (err, res) => {
+User.hashPassword = (password) => {
+    let hash = bcrypt.hashSync(password, 10);
+    return
+}
+
+User.create = (username, password, email, result) => {
+
+
+    // Hash password
+
+    let hashedUser = [username, bcrypt.hashSync(password, 10), email];
+
+        sql.query('INSERT INTO users (username, password, email) VALUES (?, ?, ?)', hashedUser, (err, res) => {
 
             if (err) {
                 console.error(err);

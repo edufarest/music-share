@@ -46,7 +46,7 @@ module.exports = {
             res.status(400).send("Not all fields are included for user");
         }
 
-        User.create([username, password, email], (err, user) => {
+        User.create(username, password, email, (err, user) => {
 
             if (err) {
                 res.send(err);
