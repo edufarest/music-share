@@ -6,7 +6,7 @@ var User = (user) => {
     this.username = user.username;
     this.password = user.password;
     this.email    = user.email;
-}
+};
 
 User.create = (user, result) => {
 
@@ -23,6 +23,36 @@ User.create = (user, result) => {
 
         })
 
-}
+};
+
+User.getAll = (result) => {
+
+    sql.query('SELECT username, email FROM users', (err, res) => {
+
+        if (err) {
+            console.error(err);
+            result(err, null);
+        } else {
+            result(null, res);
+        }
+
+    })
+
+};
+
+User.getById = (id, result) => {
+
+    sql.query('SELECT username, email FROM users WHERE userId = ?', id, (err, res) => {
+
+        if (err) {
+            console.error(err);
+            result(err, null);
+        } else {
+            result(null, res);
+        }
+
+    })
+
+};
 
 module.exports = User;
