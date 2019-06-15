@@ -4,6 +4,8 @@ const sql = require('../db.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+require('dotenv').config();
+
 var User = (user) => {
     this.username = user.username;
     this.password = user.password;
@@ -12,10 +14,30 @@ var User = (user) => {
 
 // Auth methods
 
-User.hashPassword = (password) => {
-    let hash = bcrypt.hashSync(password, 10);
-    return
+User.validatePassword = (password) => {
+    return bcrypt.compareSync(password, this.password);
 }
+
+User.generateJWT = () => {
+    const today = new Date();
+    const expirationDate = new Date(today);
+    expirationDate.setDate(today.getDate() + 60);
+
+    return jwt.sign({
+        email: this.email,
+        id:    this.userId, //FIXME Might need to retrieve the id, or store the id in the object.
+        exp: parseInt(expirationDate.getTime() / 1000, 10)
+    }, process.env.SECRET);
+
+}
+
+User.toAuthJSON = () => {
+    return {
+        id: this.userId,
+        email: this.email,
+        token: this.generateJWT(),
+    }
+};
 
 User.create = (username, password, email, result) => {
 
