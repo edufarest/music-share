@@ -1,0 +1,20 @@
+p, h1, h2, h3, h4, h5, h6 {
+    color: orange;
+}
+
+body {
+    font-family: Roboto !important;
+}
+
+.music-share-text {
+    color: orange !important;
+}
+
+.music-share-logo-text {
+    color: orange !important;
+    font-size: 175% !important;
+}
+
+.music-share-button {
+    background-color: orange !important;
+}
