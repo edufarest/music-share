@@ -7,15 +7,15 @@ var user = require('../controllers/userController');
 router.get('/', user.list_all);
 
 // Get specific user
-router.get('/:userId', user.get_user);
+router.get('/:username', user.get_user);
 
 // Create a new user
 router.post('/', user.create_user);
 
 // Update an user
-router.put('/:userId', user.update_user);
+router.put('/:username', user.update_user);
 
-// Deleted an user
-router.delete('/:userId', user.delete_user);
+// Delete an user
+router.delete('/:username', user.delete_user);
 
 module.exports = router;

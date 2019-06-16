@@ -20,7 +20,7 @@ module.exports = {
 // Return a specific user
     get_user: (req, res) => {
 
-        User.getById(req.params.userId, (err, user) => {
+        User.getById(req.params.username, (err, user) => {
 
             if (err) {
                 res.send(err)

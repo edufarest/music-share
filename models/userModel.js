@@ -16,27 +16,6 @@ var User = (user) => {
 
 User.validatePassword = (password) => {
     return bcrypt.compareSync(password, this.password);
-}
-
-User.generateJWT = () => {
-    const today = new Date();
-    const expirationDate = new Date(today);
-    expirationDate.setDate(today.getDate() + 60);
-
-    return jwt.sign({
-        email: this.email,
-        id:    this.userId, //FIXME Might need to retrieve the id, or store the id in the object.
-        exp: parseInt(expirationDate.getTime() / 1000, 10)
-    }, process.env.SECRET);
-
-}
-
-User.toAuthJSON = () => {
-    return {
-        id: this.userId,
-        email: this.email,
-        token: this.generateJWT(),
-    }
 };
 
 User.create = (username, password, email, result) => {
@@ -76,14 +55,15 @@ User.getAll = (result) => {
 
 };
 
-User.getById = (id, result) => {
+User.getById = (username, result) => {
 
-    sql.query('SELECT username, email FROM users WHERE userId = ?', id, (err, res) => {
+    sql.query('SELECT username, email FROM users WHERE username = ?', username, (err, res) => {
 
         if (err) {
             console.error(err);
             result(err, null);
         } else {
+            console.log(res);
             result(null, res);
         }
 
