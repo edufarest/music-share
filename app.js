@@ -9,6 +9,8 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+require('dotenv').config();
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -18,6 +20,33 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Connect to the database
+
+var mysql = require('mysql');
+
+let user = process.env.DBUSER;
+let password = process.env.DBPASSWORD;
+
+var connection = mysql.createConnection({
+  host    : 'localhost',
+  user    :  user,
+  password:  password,
+  database: 'musicshare'
+});
+
+connection.connect();
+
+// TEST CONNECTION
+
+// connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
+//   if (error) throw error;
+//   console.log('The solution is: ', results[0].solution);
+// });
+//
+// connection.end()
+
+// TEST CONNECTION END
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
