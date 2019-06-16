@@ -7,21 +7,12 @@ passport.use(new LocalStrategy({
     passwordField: 'password'
     },
     (username, password, cb) => {
-        let user = null;
-        UserModel.getById(username, (err, res) => {
 
-            if (err) {
-                console.error(err);
-                return;
+        UserModel.validatePassword(username, password, (res) => {
+            if (res) {
+                return cb(null, username, {message: 'Logged In!'});
+            } else {
+                return cb(null, false, {message: 'Incorrect username or password'});
             }
-
-            user = res;
-            console.log(res);
         })
-
-        if (user.validatePassword(password)) {
-            return cb(null, user, {message: 'Logged In!'});
-        } else {
-            return cb(null, false, {message: 'Incorrect username or password'});
-        }
-    }))
+    }));

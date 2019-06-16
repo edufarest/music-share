@@ -9,6 +9,8 @@ require('dotenv').config();
 
 router.post('/login', (req, res, next) => {
     passport.authenticate('local', {session: false}, (err, user, info) => {
+
+
         if (err || !user) {
             console.log("user: ");
             console.log(user);

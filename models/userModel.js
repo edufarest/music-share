@@ -14,8 +14,18 @@ var User = (user) => {
 
 // Auth methods
 
-User.validatePassword = (password) => {
-    return bcrypt.compareSync(password, this.password);
+User.validatePassword = (username, password, callback) => {
+
+    sql.query('SELECT username, password FROM users WHERE username = ?', username, (err, res) => {
+
+        if (err) {
+            console.error(err);
+            callback(false);
+        } else {
+            callback(bcrypt.compareSync(password, res[0].password));
+        }
+
+    })
 };
 
 User.create = (username, password, email, result) => {
