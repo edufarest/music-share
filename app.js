@@ -2,10 +2,16 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var session = require('express-session');
 var logger = require('morgan');
+
+const passport = require('passport');
+
+require('./passport');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const auth      = require('./routes/auth');
 
 var app = express();
 
@@ -18,38 +24,19 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
 app.use(cookieParser());
+app.use(session({
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Connect to the database
-
-var mysql = require('mysql');
-
-let user = process.env.DBUSER;
-let password = process.env.DBPASSWORD;
-
-var connection = mysql.createConnection({
-  host    : 'localhost',
-  user    :  user,
-  password:  password,
-  database: 'musicshare'
-});
-
-connection.connect();
-
-// TEST CONNECTION
-
-// connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-//   if (error) throw error;
-//   console.log('The solution is: ', results[0].solution);
-// });
-//
-// connection.end()
-
-// TEST CONNECTION END
-
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/users', passport.authenticate('jwt', {session: false}), usersRouter);
+app.use('/auth', auth);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
