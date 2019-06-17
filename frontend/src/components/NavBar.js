@@ -3,26 +3,30 @@ import {Link} from 'react-router-dom'
 
 const NavBar = () => {
     return (
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <a className='music-share-logo-text navbar-brand mb-1'
                href='/'>
                 MusicShare
             </a>
-            <div class="collapse navbar-collapse" id="navbarText">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
+            <div className="collapse navbar-collapse" id="navbarText">
+                <ul className="navbar-nav mr-auto">
+                    <li className="nav-item active">
                         <Link to='/'>
-                        <a class="nav-link" href="#">Home</a>
+                            <a className="nav-link" href="#">Home</a>
                         </Link>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Features</a>
+                    <li className="nav-item">
+                        <Link to='/profile'>
+                            <a className="nav-link" href="#">Profile</a>
+                        </Link>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Pricing</a>
+                    <li className="nav-item">
+                        <Link to='/createPlaylist'>
+                            <a className="nav-link" href="#">Create A Playlist</a>
+                        </Link>
                     </li>
                 </ul>
-                <span class="navbar-text">
+                <span className="navbar-text">
                     The best way to discover new playlists
                 </span>
             </div>

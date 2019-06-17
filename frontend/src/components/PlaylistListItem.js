@@ -2,8 +2,9 @@ import React from 'react'
 import '../styles/PlaylistListItem.css'
 import TrackListItem from './TrackListItem'
 
-const PlaylistListItem = ({playlist}) =>
+const PlaylistListItem = ({playlist, isFavorited, isAuthor}) =>
     <div className='music-share-playlist music-share-text bg-dark'>
+        {renderFavorite(isFavorited)}
         <h3 className='mt-2 ml-3'>{playlist.name}</h3>
         <h5 className='mt-2 mb-3 ml-3'> Created by:  {playlist.author}</h5>
         <ul className='mb-3 list-group music-share-track-list overflow-auto'>
@@ -22,6 +23,14 @@ const PlaylistListItem = ({playlist}) =>
 
 const renderTracks = tracks => {
     return tracks.map(track => <TrackListItem track={track}/>);
+};
+
+const renderFavorite = (isFavorited) => {
+    if (isFavorited) {
+        return (<a className='mt-3 mr-3 fa-lg far fa-star float-right'/>);
+    } else {
+        return (<a className='mt-3 mr-3 fa-lg fas fa-star float-right'/>);
+    }
 };
 
 export default PlaylistListItem;

@@ -1,14 +1,13 @@
-import React from 'react'
+import React from 'react';
 import {Redirect} from 'react-router'
 import PlaylistListItem from './PlaylistListItem'
-import '../styles/Home.css'
 
-export default class Home extends React.Component {
+export default class Profile extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            favoritePlaylists: [
+            userPlaylists: [
                 {
                     name: 'Real Ass Playlist',
                     author: 'shapdor',
@@ -63,28 +62,8 @@ export default class Home extends React.Component {
                         },
                     ]
                 }
-            ],
-            recentPlaylists: [
-                {
-                    name: 'Real Ass Playlist',
-                    author: 'shapdor',
-                    tracks: [
-                        {
-                            name: 'Them Changes',
-                            artist: 'Thundercat',
-                            length: '3:41',
-                            genre: 'jazz, funk'
-                        },
-                        {
-                            name: 'DNA',
-                            artist: 'Kendrick Lamar',
-                            length: '2:56',
-                            genre: 'hip-hop, hardcore hip-hop'
-                        },
-                    ]
-                }
-            ],
-        };
+            ]
+        }
     }
 
     render() {
@@ -93,25 +72,15 @@ export default class Home extends React.Component {
                 <Redirect to='/login'/>
             );
         }
-        return (
+
+        return(
             <div className='mt-4 container'>
+                <h2>Profile for {this.props.session}</h2>
                 <h4 className='my-3'>My Favorite Playlists:</h4>
                 <div>
-                    {this.renderPlaylists(this.state.favoritePlaylists)}
-                </div>
-                <h4 className='my-3'>Recently Added Playlists:</h4>
-                <div>
-                    {this.renderPlaylists(this.state.recentPlaylists)}
+                    {this.state.userPlaylists.map(playlist => <PlaylistListItem playlist={playlist}/>)}
                 </div>
             </div>
-        );
-    }
-
-    renderPlaylists = (playlists) => {
-        return playlists.map(playlist =>
-            <PlaylistListItem playlist={playlist} isFavorited={true} isAuthor={playlist.author == this.props.session}/>
         )
     }
-
-
 }
