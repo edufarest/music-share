@@ -1,7 +1,14 @@
 import React from 'react'
 import '../styles/Login.css'
+import {Redirect} from 'react-router'
 
-const Login = () => {
+const Login = ({session}) => {
+    if (session) {
+        return (
+            <Redirect to='/'/>
+        );
+    }
+
     return (
       <div className='mt-5 container'>
           <form>

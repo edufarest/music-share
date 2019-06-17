@@ -10,20 +10,18 @@ export default class MusicShare extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: null
+            user: "test"
         }
     }
-
-
 
     render() {
             return (
                 <div>
                     <Router>
-                        <NavBar/>
-                        <Route exact path='/' component={Home}/>
-                        <Route path='/login' component={Login}/>
                         {this.checkSession()}
+                        <NavBar/>
+                        <Route exact path='/' component={() => <Home session={this.state.user}/>}/>
+                        <Route path='/login' component={() => <Login session={this.state.user}/>}/>
                     </Router>
                 </div>
             );
@@ -31,8 +29,10 @@ export default class MusicShare extends React.Component {
     }
 
     checkSession = () => {
-         return (
-             <Redirect to="/login"/>
-         )
+        if (!this.state.user) {
+            return (
+                <Redirect to="/login"/>
+            )
+        }
     };
 }

@@ -1,0 +1,16 @@
+.music-share-playlist {
+    border: 2px solid orange;
+    border-radius: 7px;
+    background-color: gray();
+}
+
+.music-share-track-list {
+    background-color: darkgrey;
+    margin: 0 auto;
+    width: 90%;
+    height: 15vw;
+}
+
+.music-share-track-list-text {
+    color: black;
+}
