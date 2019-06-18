@@ -1,5 +1,8 @@
 use musicshare;
 
+-- Uncomment to be able to drop tables and run the entire script
+-- SET FOREIGN_KEY_CHECKS = 0;
+
 -- Create Users
 
 DROP TABLE IF EXISTS users;
@@ -58,5 +61,29 @@ CREATE TABLE songs (
   artistId    INT NOT NULL,
   FOREIGN KEY (albumId)  REFERENCES albums(albumId),
   FOREIGN KEY (artistId) REFERENCES artists(artistId)
-)
+);
 
+-- Playlists
+
+DROP TABLE IF EXISTS playlists;
+
+CREATE TABLE playlist (
+  playlistId   INT PRIMARY KEY AUTO_INCREMENT,
+  name         VARCHAR(255) NOT NULL,
+  isPrivate    BIT NOT NULL,
+  likes        INT NOT NULL,
+  dislikes     INT NOT NULL,
+  numSongs     INT NOT NULL,
+  length       INT NOT NULL,
+  primaryGenre VARCHAR(255)
+);
+
+DROP TABLE IF EXISTS playlistEntry;
+
+CREATE TABLE playlistEntry (
+  entryId     INT PRIMARY KEY AUTO_INCREMENT,
+  playlistId  INT NOT NULL,
+  songId      INT NOT NULL,
+  FOREIGN KEY (playlistId) REFERENCES playlist(playlistId),
+  FOREIGN KEY (songId)     REFERENCES songs(songId)
+);
