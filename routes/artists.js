@@ -16,7 +16,7 @@ router.get('/lookup/:name', artist.lookup);
 router.post('/', artist.create_artist);
 
 // Update an artist
-//// ......
+router.put('/:id', artist.update_artist)
 
 // Delete an artist
 //// .....
