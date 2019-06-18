@@ -51,6 +51,19 @@ module.exports = {
 
             res.json(artist);
         })
+    },
+
+
+    update_artist: (req, res) => {
+
+        Artist.update(req.params.id. req.body.name, (err, artist) => {
+            if (err) {
+                res.send(err);
+            }
+
+            res.json(artist);
+        })
+
     }
 
 

@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var logger = require('morgan');
-
+var cors   = require('cors');
 
 
 require('./passport');
@@ -33,13 +33,15 @@ app.use(session({
   saveUninitialized: false
 }));
 
+app.use(cors());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 // FIXME Create user will not work because authentication, separate from here.
 app.use('/users', usersRouter);
 app.use('/auth', auth);
-app.use('/artist', artistsRouter);
+app.use('/artists', artistsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

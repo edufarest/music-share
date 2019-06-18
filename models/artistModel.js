@@ -3,13 +3,11 @@
 const sql = require('../db.js');
 
 let Artist = (artist) => {
+    this.artistId = artist.artistId;
     this.name = artist.name;
 };
 
 Artist.create = (name, result) => {
-
-
-    console.log(name);
 
 
     sql.query('INSERT INTO artists (name) VALUES (?)', name, (err, res) => {
@@ -64,6 +62,17 @@ Artist.lookup = (name, result) => {
 
     })
 
+};
+
+Artist.update = (id, newName, result) => {
+    sql.query('UPDATE artists SET name=? WHERE artistId=?', [newName, id], (err, res) => {
+        if (err) {
+            console.error(err);
+            result(err, null);
+        } else {
+            result(null, res);
+        }
+    })
 }
 
 module.exports = Artist;
