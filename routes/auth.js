@@ -22,12 +22,10 @@ router.post('/login', (req, res, next) => {
             if (err) {
                 res.send(err);
             }
-
+			
             // Generate token
 
             const token = jwt.sign(user, process.env.SECRET);
-            res.cookie("token", token);
-			res.cookie("user", user)
             return res.json({user, token});
         });
 

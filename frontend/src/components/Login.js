@@ -2,18 +2,18 @@ import React from 'react'
 import '../styles/Login.css'
 import {Redirect} from 'react-router'
 import AuthService from '../services/AuthService'
+import Cookies from "js-cookie";
 
 export default class Login extends React.Component {
     constructor(props) {
         super(props);
-
-        this.authService = AuthService.getInstance();
 
         this.state = {
             usernameField: '',
             passwordField: ''
         }
     }
+
 
     render() {
         if (this.props.user) {
@@ -46,10 +46,11 @@ export default class Login extends React.Component {
                                value={this.state.passwordField}
                                onChange={event => this.setState({passwordField: event.target.value})}/>
                     </div>
-                    <button onClick={() => this.authService.login(this.state.usernameField, this.state.passwordField)}
+                    <button onClick={() => this.props.onLogin(this.state.usernameField, this.state.passwordField)}
                             className="mt-1 btn music-share-button">Login</button>
             </div>
         );
+
     }
 
 }

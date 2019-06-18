@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 
 const AUTH_API_URL = 'http://localhost:8000/auth/login';
 
@@ -17,9 +18,12 @@ export default class CourseService {
                 username: username,
                 password: password
             }),
-            mode: "no-cors",
+            credentials: "same-origin",
             headers: {
-                'Content-Type': 'application/json'
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             }
-        }).then(response => console.log(response));
+        })
+        .then(response => response.json());
 }

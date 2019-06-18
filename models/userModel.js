@@ -17,8 +17,7 @@ var User = (user) => {
 User.validatePassword = (username, password, callback) => {
 
     sql.query('SELECT username, password FROM users WHERE username = ?', username, (err, res) => {
-
-        if (err) {
+        if (err || res.length == 0) {
             console.error(err);
             callback(false);
         } else {
@@ -77,47 +76,6 @@ User.getById = (username, result) => {
             result(null, res);
         }
 
-    })
-
-};
-
-User.updateUser = (username, newPassword, newEmail, result) => {
-
-    let query = `UPDATE users SET ${newPassword ? 'password = ?': ''}  ${(newPassword && newEmail) ? ', ' : ''} 
-                                  ${newEmail ? 'email = ?' : ''} WHERE username = ?`;
-
-    let params = [];
-
-    if (newPassword) {
-        params.push(bcrypt.hashSync(newPassword, 10));
-    }
-
-    if (newEmail) {
-        params.push(newEmail);
-    }
-
-    params.push(username);
-
-    sql.query(query, params, (err, res) => {
-        if (err) {
-            console.error(err);
-            result(err, null);
-        } else {
-            console.log(res);
-            result(null, res);
-        }
-    });
-};
-
-User.deleteUser = (username, result) => {
-
-    sql.query('DELETE FROM users WHERE username = ?', username, (err, res) => {
-        if (err) {
-            console.error(err);
-            result(err, null);
-        } else {
-            result(null, res);
-        }
     })
 
 };
