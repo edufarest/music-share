@@ -109,7 +109,7 @@ export default class Home extends React.Component {
 
     renderPlaylists = (playlists) => {
         return playlists.map(playlist =>
-            <PlaylistListItem playlist={playlist} isFavorited={true} isAuthor={playlist.author == this.props.session}/>
+            <PlaylistListItem playlist={playlist} isFavorited={false} isAuthor={playlist.author == this.props.session}/>
         )
     }
 

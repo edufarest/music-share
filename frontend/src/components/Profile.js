@@ -76,7 +76,7 @@ export default class Profile extends React.Component {
         return(
             <div className='mt-4 container'>
                 <h2>Profile for {this.props.session}</h2>
-                <h4 className='my-3'>My Favorite Playlists:</h4>
+                <h4 className='my-3'>My Playlists:</h4>
                 <div>
                     {this.state.userPlaylists.map(playlist => <PlaylistListItem playlist={playlist}/>)}
                 </div>

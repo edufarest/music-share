@@ -18,3 +18,15 @@ body {
 .music-share-button {
     background-color: orange !important;
 }
+
+.music-share-icon:hover {
+    cursor: pointer;
+    color: white !important;
+    transition: .2s;
+}
+
+.music-share-icon-alt:hover {
+    cursor: pointer;
+    color: orange !important;
+    transition: .2s;
+}
