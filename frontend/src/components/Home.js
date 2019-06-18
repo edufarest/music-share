@@ -87,7 +87,7 @@ export default class Home extends React.Component {
     }
 
     render() {
-        if (!this.props.session) {
+        if (!this.props.user) {
             return (
                 <Redirect to='/login'/>
             );

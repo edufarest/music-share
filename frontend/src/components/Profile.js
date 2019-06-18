@@ -67,7 +67,7 @@ export default class Profile extends React.Component {
     }
 
     render() {
-        if (!this.props.session) {
+        if (!this.props.user) {
             return (
                 <Redirect to='/login'/>
             );
@@ -75,7 +75,7 @@ export default class Profile extends React.Component {
 
         return(
             <div className='mt-4 container'>
-                <h2>Profile for {this.props.session}</h2>
+                <h2>Profile for {this.props.user}</h2>
                 <h3 className='my-3'>My Playlists:</h3>
                 <div>
                     {this.state.userPlaylists.map(playlist => <PlaylistItem playlist={playlist}/>)}
