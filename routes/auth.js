@@ -28,8 +28,10 @@ router.post('/login', (req, res, next) => {
             // Generate token
 
             const token = jwt.sign(user, process.env.SECRET);
+            res.cookie("token", token);
             return res.json({user, token});
         });
+
     })(req, res);
 });
 
