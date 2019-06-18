@@ -3,11 +3,14 @@ import {Redirect} from 'react-router'
 import {withRouter} from 'react-router-dom'
 import PlaylistItem from './PlaylistItem'
 import TrackListItem from './TrackListItem'
+import TrackService from '../services/TrackService'
 import '../styles/CreatePlaylist.css'
 
 class CreatePlaylist extends React.Component {
     constructor(props) {
         super(props);
+
+        this.trackService = TrackService.getInstance();
 
         this.state = {
             search: [],
@@ -18,19 +21,27 @@ class CreatePlaylist extends React.Component {
                 tracks: [
                     {
                         name: 'Them Changes',
+                        id: '1',
                         artist: 'Thundercat',
                         length: '3:41',
                         genre: 'jazz, funk'
                     },
                     {
                         name: 'DNA',
+                        id: '1',
                         artist: 'Kendrick Lamar',
                         length: '2:56',
-                        genre: 'hip-hop, hardcore hip-hop'
+                        genre: 'hip-hop, conscious hip-hop'
                     }
                 ]
             }
         }
+    }
+
+    searchTracks() {
+        this.trackService.searchTracks(this.state.searchInput).then(
+            data => this.setState({tracks: data})
+        )
     }
 
     render() {
@@ -62,7 +73,7 @@ class CreatePlaylist extends React.Component {
                                value={this.state.searchInput}
                                onChange={event => this.setState({searchInput: event.target.value})}/>
                         <button className='btn music-share-button col-1'
-                                onClick={() => console.log(this.state.searchInput)}>
+                                onClick={() => this.searchTracks()}>
                             <i className="fas fa-search"></i>
                         </button>
                     </div>
