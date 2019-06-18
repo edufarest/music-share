@@ -9,8 +9,9 @@ const passport = require('passport');
 
 require('./passport');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var indexRouter   = require('./routes/index');
+var usersRouter   = require('./routes/users');
+let artistsRouter = require('./routes/artists');
 const auth      = require('./routes/auth');
 
 var app = express();
@@ -35,8 +36,10 @@ app.use(session({
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+// FIXME Create user will not work because authentication, separate from here.
 app.use('/users', passport.authenticate('jwt', {session: false}), usersRouter);
 app.use('/auth', auth);
+app.use('/artist', artistsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
