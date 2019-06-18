@@ -1,7 +1,6 @@
 import React from 'react'
 import {Redirect} from 'react-router'
-import PlaylistListItem from './PlaylistListItem'
-import '../styles/Home.css'
+import PlaylistItem from './PlaylistItem'
 
 export default class Home extends React.Component {
     constructor(props) {
@@ -10,7 +9,7 @@ export default class Home extends React.Component {
         this.state = {
             favoritePlaylists: [
                 {
-                    name: 'Real Ass Playlist',
+                    name: 'Real Dope Playlist',
                     author: 'shapdor',
                     tracks: [
                         {
@@ -66,7 +65,7 @@ export default class Home extends React.Component {
             ],
             recentPlaylists: [
                 {
-                    name: 'Real Ass Playlist',
+                    name: 'Real Dope Playlist',
                     author: 'shapdor',
                     tracks: [
                         {
@@ -109,7 +108,7 @@ export default class Home extends React.Component {
 
     renderPlaylists = (playlists) => {
         return playlists.map(playlist =>
-            <PlaylistListItem playlist={playlist} isFavorited={false} isAuthor={playlist.author == this.props.session}/>
+            <PlaylistItem playlist={playlist} isFavorited={false} isAuthor={playlist.author == this.props.session}/>
         )
     }
 

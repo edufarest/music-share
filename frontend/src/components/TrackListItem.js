@@ -1,5 +1,6 @@
 import React from 'react';
 
+// TODO: Add an edit mode here to enable removing tracks - add mode and delete mode
 const TrackListItem = ({track}) =>
     <li className='list-group-item list-group-item-list music-share-track-list-text'>
         <div className='row'>

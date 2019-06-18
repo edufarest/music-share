@@ -2,7 +2,9 @@ import React from 'react'
 import '../styles/PlaylistListItem.css'
 import TrackListItem from './TrackListItem'
 
-const PlaylistListItem = ({playlist, toggleFavorite, isFavorited, isAuthor}) =>
+
+//TODO: Make the individual tracks removable if in edit mode, in TrackListItem
+const PlaylistItem = ({playlist, toggleFavorite, isFavorited, isAuthor}) =>
     <div className='music-share-playlist music-share-text bg-dark'>
         {renderFavorite(playlist, isFavorited, toggleFavorite)}
         <h3 className='mt-2 ml-3'>{playlist.name}</h3>
@@ -36,4 +38,4 @@ const renderFavorite = (playlist, isFavorited, toggleFavorite) => {
     }
 };
 
-export default PlaylistListItem;
+export default PlaylistItem;

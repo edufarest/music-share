@@ -1,6 +1,6 @@
 import React from 'react';
 import {Redirect} from 'react-router'
-import PlaylistListItem from './PlaylistListItem'
+import PlaylistItem from './PlaylistItem'
 
 export default class Profile extends React.Component {
     constructor(props) {
@@ -9,7 +9,7 @@ export default class Profile extends React.Component {
         this.state = {
             userPlaylists: [
                 {
-                    name: 'Real Ass Playlist',
+                    name: 'Real Dope Playlist',
                     author: 'shapdor',
                     tracks: [
                         {
@@ -76,9 +76,9 @@ export default class Profile extends React.Component {
         return(
             <div className='mt-4 container'>
                 <h2>Profile for {this.props.session}</h2>
-                <h4 className='my-3'>My Playlists:</h4>
+                <h3 className='my-3'>My Playlists:</h3>
                 <div>
-                    {this.state.userPlaylists.map(playlist => <PlaylistListItem playlist={playlist}/>)}
+                    {this.state.userPlaylists.map(playlist => <PlaylistItem playlist={playlist}/>)}
                 </div>
             </div>
         )

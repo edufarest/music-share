@@ -1,7 +1,8 @@
 import React from 'react';
 import {Redirect} from 'react-router'
 import {withRouter} from 'react-router-dom'
-import PlaylistListItem from './PlaylistListItem'
+import PlaylistItem from './PlaylistItem'
+import TrackListItem from './TrackListItem'
 import '../styles/CreatePlaylist.css'
 
 class CreatePlaylist extends React.Component {
@@ -43,7 +44,7 @@ class CreatePlaylist extends React.Component {
             <div className='mt-4 container'>
                 <h2>Create A Playlist</h2>
                 <div>
-                    <PlaylistListItem playlist={this.state.workingPlaylist}/>
+                    <PlaylistItem playlist={this.state.workingPlaylist}/>
                 </div>
                 <h4 className='mt-3'>Playlist Name</h4>
                 <input className='my-3 form-control'
@@ -66,7 +67,7 @@ class CreatePlaylist extends React.Component {
                         </button>
                     </div>
                     <ul class="px-5 my-4 list-group list-group-flush overflow-auto">
-                        <li class="list-group-item">
+                        <li class="list-group-item list-group-item-dark">
                             <div className='row'>
                                 <span className='col-4'>Track Name</span>
                                 <span className='col-3'>Artist</span>
