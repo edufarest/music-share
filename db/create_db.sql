@@ -1,11 +1,13 @@
 use musicshare;
 
 -- Uncomment to be able to drop tables and run the entire script
--- SET FOREIGN_KEY_CHECKS = 0;
+SET FOREIGN_KEY_CHECKS = 0;
 
 -- Create Users
 
 DROP TABLE IF EXISTS users;
+
+INSERT INTO albums (name, releaseDate, genre1, genre2, genre3, authorId) VALUES ('Dark side of the moon', '1973-03-01', 'rock', 'prog rock', 'psych', 1);
 
 -- TODO Create username and password min validation
 

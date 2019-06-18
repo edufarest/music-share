@@ -59,10 +59,6 @@ module.exports = {
 
     update_user: (req, res) => {
 
-        // Check user has valid credentials
-
-        // TODO Update email and or password
-
         User.updateUser(req.params.username, req.body.newPassword, req.body.email, (err, user) => {
             res.json(user);
         })
@@ -70,8 +66,6 @@ module.exports = {
     },
 
     delete_user: (req, res) => {
-
-        // Check user has valid credentials
 
         User.deleteUser(req.params.username, (err, result) => {
             res.json(result);

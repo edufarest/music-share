@@ -39,12 +39,26 @@ module.exports = {
 
         let name = req.body.name;
         let releaseDate = req.body.releaseDate;
-        let
+        let genres      = req.body.genres;
+        let authorId    = req.body.authorId;
 
+        Album.create(name, releaseDate, genres, authorId, (err, album) => {
+            if (err) {
+                res.send(err);
+            }
 
-        Album.create(name, )
+            res.send(album);
+        })
+    },
+
+    delete_album: (req, res) => {
+        Album.delete(req.params.id, (err, result) => {
+
+            err ? res.send(err) : res.send(result);
+
+        })
     }
 
 
 
-}
+};
