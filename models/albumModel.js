@@ -23,5 +23,35 @@ let respond = (err, res, callback) => {
 
 };
 
-// Album.create = (fields, )
+Album.create = (name, releaseDate, genres, authorId, result) => {
 
+    sql.query('INSERT INTO albums (name, releaseDate, genre1, genre2, genre3, authorId) VALUES (? ? ? ? ? ?)',
+        [name, releaseDate, genres[0] || '', genres[1] || '', genres[2] || '', authorId], (err, res) => {respond(err, res, result)});
+
+};
+
+Album.getAll = (result) => {
+    sql.query('SELECT * FROM albums', (err, res) => {
+        respond(err, res, result)
+    })
+};
+
+Album.getById = (id, result) => {
+    sql.query('SELECT * FROM albums WHERE albumId = ?', id, (err, res) => {
+        respond(err, res, result);
+    })
+};
+
+Album.lookup = (name, result) => {
+    sql.query('SELECT * FROM albums WHERE name=?', name, (err, res) => {
+        respond(err, res, result);
+    })
+};
+
+Album.delete = (id, result) => {
+    sql.query('DELETE FROM albums WHERE albumId=?', id, (err, res) => {
+        respond(err, res, result);
+    })
+};
+
+module.exports = Album;

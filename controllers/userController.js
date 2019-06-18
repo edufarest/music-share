@@ -76,8 +76,6 @@ module.exports = {
         User.deleteUser(req.params.username, (err, result) => {
             res.json(result);
         })
-
-        //TODO
     }
 }
 
