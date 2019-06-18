@@ -9,6 +9,7 @@ let Album = (album) => {
     this.genre1      = album.genre1;
     this.genre2      = album.genre2;
     this.genre3      = album.genre3;
+    this.authorId    = album.authorId;
 };
 
 let respond = (err, res, callback) => {
@@ -22,5 +23,5 @@ let respond = (err, res, callback) => {
 
 };
 
-Album.create = ()
+// Album.create = (fields, )
 

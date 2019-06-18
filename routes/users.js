@@ -16,15 +16,11 @@ router.get('/:username', user.get_user);
 // Create a new user
 router.post('/', user.create_user);
 
-
-// TODO Add middle ware to these routes
-
 // Update an user
-router.put('/:username', user.update_user);
-//, passport.authenticate('jwt', {session: false})
+router.put('/:username', passport.authenticate('jwt', {session: false}), user.update_user);
 
 // Delete an user
-router.delete('/:username', user.delete_user);
-//, passport.authenticate('jwt', {session: false})
+router.delete('/:username', passport.authenticate('jwt', {session: false}), user.delete_user);
+
 
 module.exports = router;
