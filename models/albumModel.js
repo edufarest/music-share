@@ -25,7 +25,7 @@ let respond = (err, res, callback) => {
 
 Album.create = (name, releaseDate, genres, authorId, result) => {
 
-    sql.query('INSERT INTO albums (name, releaseDate, genre1, genre2, genre3, authorId) VALUES (? ? ? ? ? ?)',
+    sql.query('INSERT INTO albums (name, releaseDate, genre1, genre2, genre3, authorId) VALUES (?, ?, ?, ?, ?, ?)',
         [name, releaseDate, genres[0] || '', genres[1] || '', genres[2] || '', authorId], (err, res) => {respond(err, res, result)});
 
 };
