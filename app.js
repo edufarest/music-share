@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var logger = require('morgan');
 
-const passport = require('passport');
+
 
 require('./passport');
 
@@ -37,7 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 // FIXME Create user will not work because authentication, separate from here.
-app.use('/users', passport.authenticate('jwt', {session: false}), usersRouter);
+app.use('/users', usersRouter);
 app.use('/auth', auth);
 app.use('/artist', artistsRouter);
 

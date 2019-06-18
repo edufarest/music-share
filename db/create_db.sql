@@ -24,8 +24,6 @@ CREATE TABLE artists (
   name         VARCHAR(255) NOT NULL
 );
 
-insert into artists (name) values ("jose");
-
 -- TODO Create popularity function?
 
 -- Create Album
