@@ -18,7 +18,7 @@ passport.use(new LocalStrategy({
             if (res) {
                 return cb(null, username, {message: 'Logged In!'});
             } else {
-                return cb(null, false, {message: 'Incorrect username or password'});
+                return cb(null, null, {message: 'Incorrect username or password'});
             }
         })
     })
