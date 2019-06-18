@@ -61,13 +61,21 @@ module.exports = {
 
         // Check user has valid credentials
 
-        // TODO
+        // TODO Update email and or password
+
+        User.updateUser(req.params.username, req.body.newPassword, req.body.email, (err, user) => {
+            res.json(user);
+        })
 
     },
 
     delete_user: (req, res) => {
 
         // Check user has valid credentials
+
+        User.deleteUser(req.params.username, (err, result) => {
+            res.json(result);
+        })
 
         //TODO
     }

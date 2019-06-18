@@ -81,4 +81,45 @@ User.getById = (username, result) => {
 
 };
 
+User.updateUser = (username, newPassword, newEmail, result) => {
+
+    let query = `UPDATE users SET ${newPassword ? 'password = ?': ''}  ${(newPassword && newEmail) ? ', ' : ''} 
+                                  ${newEmail ? 'email = ?' : ''} WHERE username = ?`;
+
+    let params = [];
+
+    if (newPassword) {
+        params.push(bcrypt.hashSync(newPassword, 10));
+    }
+
+    if (newEmail) {
+        params.push(newEmail);
+    }
+
+    params.push(username);
+
+    sql.query(query, params, (err, res) => {
+        if (err) {
+            console.error(err);
+            result(err, null);
+        } else {
+            console.log(res);
+            result(null, res);
+        }
+    });
+};
+
+User.deleteUser = (username, result) => {
+
+    sql.query('DELETE FROM users WHERE username = ?', username, (err, res) => {
+        if (err) {
+            console.error(err);
+            result(err, null);
+        } else {
+            result(null, res);
+        }
+    })
+
+};
+
 module.exports = User;
