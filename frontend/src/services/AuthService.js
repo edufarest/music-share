@@ -12,13 +12,14 @@ export default class CourseService {
     };
 
     login = (username, password) => fetch(AUTH_API_URL, {
-        method: 'POST',
-        body: JSON.stringify({
-            username: username,
-            password: password
-        }),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }).then(response => console.log(response));
+            method: 'POST',
+            body: JSON.stringify({
+                username: username,
+                password: password
+            }),
+            mode: "no-cors",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => console.log(response));
 }
