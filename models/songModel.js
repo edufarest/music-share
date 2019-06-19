@@ -92,6 +92,6 @@ Song.delete = (id, result) => {
     sql.query('DELETE FROM songs WHERE songId=?', id, (err, res) => {
         respond(err, res, result);
     })
-}
+};
 
 module.exports = Song;
