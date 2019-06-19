@@ -38,7 +38,7 @@ module.exports = {
 
         let id = req.body.id;
         let title = req.body.title;
-        let length = req.body.title;
+        let length = req.body.length;
         let tempo = req.body.tempo;
         let energy = req.body.energy;
         let valence = req.body.valence;

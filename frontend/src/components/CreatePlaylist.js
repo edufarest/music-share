@@ -44,10 +44,10 @@ class CreatePlaylist extends React.Component {
             genre: 'placeholder genre'
         };
 
+        this.trackService.createTrack(track).then(response => console.log(response));
         this.state.workingPlaylist.tracks.push(convertedTrack);
 
         this.setState({workingPlaylist: this.state.workingPlaylist});
-        console.log(this.state.workingPlaylist);
     };
 
     // Obtained from https://stackoverflow.com/questions/21294302/converting-milliseconds-to-minutes-and-seconds-with-javascript

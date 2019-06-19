@@ -37,7 +37,7 @@ Song.create = (id, title, length, tempo, energy, valence, releaseDate, genres, a
 
     sql.query('INSERT INTO songs (songId, title, length, tempo, energy, valence, genre1,' +
                 ' genre2, genre3, releaseDate, timesUsed, albumId, artistId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                [id, title, length, tempo, energy, valence, genres[0] || '', genres[1] || '', genres[2] || '', 1, albumId, artistId],
+                [id, title, length, tempo, energy, valence, releaseDate, genres[0] || '', genres[1] || '', genres[2] || '', 1, albumId, artistId],
         (err, res) => {respond(err, res, result)})
 
 };
