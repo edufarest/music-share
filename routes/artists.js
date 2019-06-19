@@ -18,7 +18,7 @@ router.post('/', artist.create_artist);
 // Update an artist
 router.put('/:id', artist.update_artist)
 
-// Delete an artist
-//// .....
+// TODO Delete an artist
+
 
 module.exports = router;
