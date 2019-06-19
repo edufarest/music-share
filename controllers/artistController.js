@@ -44,7 +44,7 @@ module.exports = {
 
     create_artist: (req, res) => {
 
-        Artist.create(req.body.name, (err, artist) => {
+        Artist.create(req.body.name, req.body.id, (err, artist) => {
             if (err) {
                 res.send(err);
             }

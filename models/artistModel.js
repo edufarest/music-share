@@ -7,10 +7,9 @@ let Artist = (artist) => {
     this.name = artist.name;
 };
 
-Artist.create = (name, result) => {
+Artist.create = (name, id, result) => {
 
-
-    sql.query('INSERT INTO artists (name) VALUES (?)', name, (err, res) => {
+    sql.query('INSERT INTO artists (artistId, name) VALUES (?, ?)', id, name, (err, res) => {
         if (err) {
             console.error(err);
             result(err, null);
