@@ -36,6 +36,7 @@ class CreatePlaylist extends React.Component {
     };
 
     addTrack = (track) => {
+        console.log(track);
         let convertedTrack = {
             id: track.id,
             name: track.name,
@@ -44,7 +45,7 @@ class CreatePlaylist extends React.Component {
             genre: 'placeholder genre'
         };
 
-        //this.trackService.createTrack(track).then(response => console.log(response));
+        this.trackService.createTrack(track).then(response => console.log(response));
         this.state.workingPlaylist.tracks.push(convertedTrack);
 
         this.setState({workingPlaylist: this.state.workingPlaylist});

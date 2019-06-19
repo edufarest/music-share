@@ -15,7 +15,7 @@ export default class TrackService {
     };
 
     searchTracks = (query) =>
-        fetch(TRACK_API_URL + '/lookup/' +query)
+        fetch(TRACK_API_URL + '/lookup/' + query)
             .then(response => response.json());
 
     createTrack = (track) => {
@@ -32,12 +32,33 @@ export default class TrackService {
             genres: ['placeholder genre'],
         };
 
-        return fetch(TRACK_API_URL, {
+        return fetch(ARTIST_API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: track.artists[0].name,
+                id: track.artists[0].id
+            })
+        }).then(() => fetch(ALBUM_API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: track.album.name,
+                id: track.album.id,
+                authorId: track.artists[0].name,
+                releaseDate: track.release_date,
+                genres: ['placeholder genre']
+            })
+        })).then(() => fetch(TRACK_API_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(backendTrack)
-        }).then(response => response.json());
+        })).then(response => response.json());
     }
 }
