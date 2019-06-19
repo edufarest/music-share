@@ -9,8 +9,15 @@ export default class Home extends React.Component {
         this.state = {
             favoritePlaylists: [
                 {
-                    name: 'Real Dope Playlist',
-                    author: 'shapdor',
+                    name: 'Real Cool Playlist',
+                    author: 'john',
+                    length: '43:23',
+                    primaryGenre: 'hip hop',
+                    loudness: '0.73',
+                    danceability: '0.43',
+                    happiness: '0.48',
+                    isAuthor: false,
+                    isFavorited: true,
                     tracks: [
                         {
                             name: 'Them Changes',
@@ -22,51 +29,58 @@ export default class Home extends React.Component {
                             name: 'DNA',
                             artist: 'Kendrick Lamar',
                             length: '2:56',
-                            genre: 'hip-hop, hardcore hip-hop'
+                            genre: 'hip hop, hardcore hip hop'
                         },
                         {
-                            name: 'Them Changes',
-                            artist: 'Thundercat',
+                            name: 'Mind Mischief',
+                            artist: 'Tame Impala',
+                            length: '4:23',
+                            genre: 'psychedelic rock'
+                        },
+                        {
+                            name: '1539 N. Calvert',
+                            artist: 'JPEGMAFIA',
+                            length: '2:37',
+                            genre: 'glitch hop'
+                        },
+                        {
+                            name: 'Reborn',
+                            artist: 'KIDS SEE GHOSTS',
+                            length: '3:42',
+                            genre: 'hip hop, psychedelic hip hop'
+                        },
+                        {
+                            name: 'Breathing Underwater',
+                            artist: 'Hiatus Kaiyote',
+                            length: '5:36',
+                            genre: 'future soul, neo-soul'
+                        },
+                        {
+                            name: 'EARFQUAKE',
+                            artist: 'Tyler, The Creator',
+                            length: '3:10',
+                            genre: 'R&B, hip hop'
+                        },
+                        {
+                            name: 'Decks Dark',
+                            artist: 'Radiohead',
                             length: '3:41',
-                            genre: 'jazz, funk'
-                        },
-                        {
-                            name: 'DNA',
-                            artist: 'Kendrick Lamar',
-                            length: '2:56',
-                            genre: 'hip-hop, hardcore hip-hop'
-                        },
-                        {
-                            name: 'Them Changes',
-                            artist: 'Thundercat',
-                            length: '3:41',
-                            genre: 'jazz, funk'
-                        },
-                        {
-                            name: 'DNA',
-                            artist: 'Kendrick Lamar',
-                            length: '2:56',
-                            genre: 'hip-hop, hardcore hip-hop'
-                        },
-                        {
-                            name: 'Them Changes',
-                            artist: 'Thundercat',
-                            length: '3:41',
-                            genre: 'jazz, funk'
-                        },
-                        {
-                            name: 'DNA',
-                            artist: 'Kendrick Lamar',
-                            length: '2:56',
-                            genre: 'hip-hop, hardcore hip-hop'
+                            genre: 'art rock, rock'
                         },
                     ]
                 }
             ],
             recentPlaylists: [
                 {
-                    name: 'Real Dope Playlist',
-                    author: 'shapdor',
+                    name: 'Real Cool Playlist',
+                    author: 'john',
+                    length: '43:23',
+                    primaryGenre: 'hip hop',
+                    loudness: '0.73',
+                    danceability: '0.43',
+                    happiness: '0.48',
+                    isAuthor: false,
+                    isFavorited: true,
                     tracks: [
                         {
                             name: 'Them Changes',
@@ -78,7 +92,43 @@ export default class Home extends React.Component {
                             name: 'DNA',
                             artist: 'Kendrick Lamar',
                             length: '2:56',
-                            genre: 'hip-hop, hardcore hip-hop'
+                            genre: 'hip hop, hardcore hip hop'
+                        },
+                        {
+                            name: 'Mind Mischief',
+                            artist: 'Tame Impala',
+                            length: '4:23',
+                            genre: 'psychedelic rock'
+                        },
+                        {
+                            name: '1539 N. Calvert',
+                            artist: 'JPEGMAFIA',
+                            length: '2:37',
+                            genre: 'glitch hop'
+                        },
+                        {
+                            name: 'Reborn',
+                            artist: 'KIDS SEE GHOSTS',
+                            length: '3:42',
+                            genre: 'hip hop, psychedelic hip hop'
+                        },
+                        {
+                            name: 'Breathing Underwater',
+                            artist: 'Hiatus Kaiyote',
+                            length: '5:36',
+                            genre: 'future soul, neo-soul'
+                        },
+                        {
+                            name: 'EARFQUAKE',
+                            artist: 'Tyler, The Creator',
+                            length: '3:10',
+                            genre: 'R&B, hip hop'
+                        },
+                        {
+                            name: 'Decks Dark',
+                            artist: 'Radiohead',
+                            length: '3:41',
+                            genre: 'art rock, rock'
                         },
                     ]
                 }
@@ -94,11 +144,11 @@ export default class Home extends React.Component {
         }
         return (
             <div className='mt-4 container'>
-                <h4 className='my-3'>My Favorite Playlists:</h4>
+                <h3 className='my-3'>My Favorite Playlists:</h3>
                 <div>
                     {this.renderPlaylists(this.state.favoritePlaylists)}
                 </div>
-                <h4 className='my-3'>Recently Added Playlists:</h4>
+                <h3 className='my-3'>Recently Added Playlists:</h3>
                 <div>
                     {this.renderPlaylists(this.state.recentPlaylists)}
                 </div>

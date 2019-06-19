@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TRACK_API_URL = 'http://localhost:8000/songs/lookup'
+const TRACK_API_URL = 'http://192.168.0.5:8000/songs/lookup'
 
 export default class TrackService {
     static myInstance = null;

@@ -17,7 +17,7 @@ class CreatePlaylist extends React.Component {
             searchInput: '',
             workingPlaylist: {
                 name: '',
-                author: this.props.session,
+                author: this.props.user,
                 tracks: []
             }
         }
@@ -31,10 +31,31 @@ class CreatePlaylist extends React.Component {
         )
     }
 
-    renderSearchResults() {
-        console.log(this.state.search);
-        return this.state.search.map(track => <TrackSearchListItem track={track}/>)
-    }
+    renderSearchResults = () => {
+        return this.state.search.map(track => <TrackSearchListItem track={track} addTrack={this.addTrack}/>)
+    };
+
+    addTrack = (track) => {
+        let convertedTrack = {
+            id: track.id,
+            name: track.name,
+            artist: track.artists[0].name,
+            length: this.millisToMinutesAndSeconds(track.duration_ms),
+            genre: 'placeholder genre'
+        };
+
+        this.state.workingPlaylist.tracks.push(convertedTrack);
+
+        this.setState({workingPlaylist: this.state.workingPlaylist});
+        console.log(this.state.workingPlaylist);
+    };
+
+    // Obtained from https://stackoverflow.com/questions/21294302/converting-milliseconds-to-minutes-and-seconds-with-javascript
+    millisToMinutesAndSeconds = (millis) => {
+        let minutes = Math.floor(millis / 60000);
+        let seconds = ((millis % 60000) / 1000).toFixed(0);
+        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+    };
 
     render() {
         if (!this.props.user) {
@@ -72,11 +93,12 @@ class CreatePlaylist extends React.Component {
                     <ul class="px-5 my-4 list-group list-group-flush music-share-create-search-results overflow-auto">
                         <li class="list-group-item list-group-item-dark sticky-top">
                             <div className='row'>
-                                <span className='col-2'>Album Art</span>
+                                <span className='col-1'>Cover</span>
                                 <span className='col-3'>Track Name</span>
                                 <span className='col-3'>Artist</span>
-                                <span className='col-2'>Length</span>
-                                <span className='col-2'>Genre</span>
+                                <span className='col-2'>Album</span>
+                                <span className='col-1'>Length</span>
+                                <span className='col-1'>&nbsp;</span>
                             </div>
                         </li>
                         {this.renderSearchResults()}
