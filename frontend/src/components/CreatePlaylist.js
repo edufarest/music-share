@@ -2,7 +2,7 @@ import React from 'react';
 import {Redirect} from 'react-router'
 import {withRouter} from 'react-router-dom'
 import PlaylistItem from './PlaylistItem'
-import TrackListItem from './TrackListItem'
+import TrackSearchListItem from './TrackSearchListItem'
 import TrackService from '../services/TrackService'
 import '../styles/CreatePlaylist.css'
 
@@ -18,30 +18,22 @@ class CreatePlaylist extends React.Component {
             workingPlaylist: {
                 name: '',
                 author: this.props.session,
-                tracks: [
-                    {
-                        name: 'Them Changes',
-                        id: '1',
-                        artist: 'Thundercat',
-                        length: '3:41',
-                        genre: 'jazz, funk'
-                    },
-                    {
-                        name: 'DNA',
-                        id: '1',
-                        artist: 'Kendrick Lamar',
-                        length: '2:56',
-                        genre: 'hip-hop, conscious hip-hop'
-                    }
-                ]
+                tracks: []
             }
         }
     }
 
     searchTracks() {
-        this.trackService.searchTracks(this.state.searchInput).then(
-            data => this.setState({tracks: data})
+        this.trackService.searchTracks(this.state.searchInput).then (
+            data => {
+                this.setState({search: data.tracks.items});
+            }
         )
+    }
+
+    renderSearchResults() {
+        console.log(this.state.search);
+        return this.state.search.map(track => <TrackSearchListItem track={track}/>)
     }
 
     render() {
@@ -77,24 +69,17 @@ class CreatePlaylist extends React.Component {
                             <i className="fas fa-search"></i>
                         </button>
                     </div>
-                    <ul class="px-5 my-4 list-group list-group-flush overflow-auto">
-                        <li class="list-group-item list-group-item-dark">
+                    <ul class="px-5 my-4 list-group list-group-flush music-share-create-search-results overflow-auto">
+                        <li class="list-group-item list-group-item-dark sticky-top">
                             <div className='row'>
-                                <span className='col-4'>Track Name</span>
+                                <span className='col-2'>Album Art</span>
+                                <span className='col-3'>Track Name</span>
                                 <span className='col-3'>Artist</span>
                                 <span className='col-2'>Length</span>
                                 <span className='col-2'>Genre</span>
                             </div>
                         </li>
-                        <li className="list-group-item">
-                            <div className='row'>
-                                <span className='col-4'>This is a song</span>
-                                <span className='col-3'>By an artist</span>
-                                <span className='col-2'>6:30</span>
-                                <span className='col-2'>heavy metal</span>
-                                <i className="mt-1 col-1 fas fa-lg fa-plus music-share-icon-alt float-right"/>
-                            </div>
-                        </li>
+                        {this.renderSearchResults()}
                     </ul>
                 </div>
                 <div className='row mb-3'>

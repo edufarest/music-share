@@ -12,8 +12,8 @@ export default class TrackService {
         return this.myInstance;
     };
 
-    searchTracks = (query) => {
-        fetch('http://localhost:8000/songs/lookup/' + query)
+    searchTracks = (query) =>
+        fetch(TRACK_API_URL + '/' + query)
             .then(response => response.json());
-    }
+
 }

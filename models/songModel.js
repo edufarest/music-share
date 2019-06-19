@@ -64,6 +64,7 @@ Song.lookup = (name, result) => {
     // grant_type: client_credentials
     //  - Response: response.access_token
 
+	
     let uri = "https://accounts.spotify.com/api/token";
 
     fetch(uri, {
@@ -84,7 +85,7 @@ Song.lookup = (name, result) => {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
-        }).then((res) => res.json().then((res) => {result(null, res.tracks)}))
+        }).then((res) => res.json()).then(data => result(null, data));
     }
 
     //fetch: https://api.spotify.com/v1/search?q=THEQUERY&type=track

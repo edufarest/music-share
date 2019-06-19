@@ -3,3 +3,11 @@
     border-radius: 7px;
     background-color: gray();
 }
+
+.music-share-create-search-results {
+    max-height: 35vw;
+}
+
+.music-share-search-result-img {
+    height: 10%;
+}
