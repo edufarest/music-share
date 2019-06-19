@@ -56,14 +56,6 @@ Song.getById = (id, result) => {
 
 Song.lookup = (name, result) => {
 
-    // fetch with access token
-    // https://accounts.spotify.com/api/token
-    // Header: Authorization value: 'basic process.env.accesstoken'
-    // content type: value: 'application/x-www-form-urlencoded
-    // body:
-    // grant_type: client_credentials
-    //  - Response: response.access_token
-
     let uri = "https://accounts.spotify.com/api/token";
 
     fetch(uri, {
@@ -85,11 +77,21 @@ Song.lookup = (name, result) => {
                 'Authorization': `Bearer ${token}`
             }
         }).then((res) => res.json().then((res) => {result(null, res.tracks)}))
-    }
-
-    //fetch: https://api.spotify.com/v1/search?q=THEQUERY&type=track
-    // Authorization: Bearer: Token from prev fetch
+    };
 
 };
+
+Song.updateUsage = (id, increase, result) => {
+
+    sql.query(`UPDATE songs SET timesUsed = timesUsed + ${increase ? 1 : -1} WHERE songId=?`, id, (err, res) => {
+        respond(err, res, result);
+    })
+};
+
+Song.delete = (id, result) => {
+    sql.query('DELETE FROM songs WHERE songId=?', id, (err, res) => {
+        respond(err, res, result);
+    })
+}
 
 module.exports = Song;
