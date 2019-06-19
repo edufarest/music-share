@@ -1,6 +1,8 @@
 import React from 'react';
 
-const TRACK_API_URL = 'http://192.168.0.5:8000/songs'
+const TRACK_API_URL = 'http://192.168.0.5:8000/songs';
+const ARTIST_API_URL = 'http://192.168.0.5:8000/artists';
+const ALBUM_API_URL = 'http://192.168.0.5:8000/albums';
 
 export default class TrackService {
     static myInstance = null;

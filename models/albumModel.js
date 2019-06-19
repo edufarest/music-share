@@ -23,10 +23,10 @@ let respond = (err, res, callback) => {
 
 };
 
-Album.create = (name, releaseDate, genres, authorId, result) => {
+Album.create = (albumId, name, releaseDate, genres, authorId, result) => {
 
-    sql.query('INSERT INTO albums (name, releaseDate, genre1, genre2, genre3, authorId) VALUES (?, ?, ?, ?, ?, ?)',
-        [name, releaseDate, genres[0] || '', genres[1] || '', genres[2] || '', authorId], (err, res) => {respond(err, res, result)});
+    sql.query('INSERT INTO albums (albumId, name, releaseDate, genre1, genre2, genre3, authorId) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [albumId, name, releaseDate, genres[0] || '', genres[1] || '', genres[2] || '', authorId], (err, res) => {respond(err, res, result)});
 
 };
 

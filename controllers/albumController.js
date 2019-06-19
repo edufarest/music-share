@@ -37,12 +37,13 @@ module.exports = {
 
     create_album: (req, res) => {
 
+		let albumId     = req.body.id;
         let name = req.body.name;
         let releaseDate = req.body.releaseDate;
         let genres      = req.body.genres;
         let authorId    = req.body.authorId;
 
-        Album.create(name, releaseDate, genres, authorId, (err, album) => {
+        Album.create(albumId, name, releaseDate, genres, authorId, (err, album) => {
             if (err) {
                 res.send(err);
             }
