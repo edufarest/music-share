@@ -7,8 +7,6 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS users;
 
-INSERT INTO albums (name, releaseDate, genre1, genre2, genre3, authorId) VALUES ('Dark side of the moon', '1973-03-01', 'rock', 'prog rock', 'psych', 1);
-
 -- TODO Create username and password min validation
 
 CREATE TABLE users (
@@ -22,7 +20,7 @@ CREATE TABLE users (
 DROP TABLE IF EXISTS artists;
 
 CREATE TABLE artists (
-  artistId     INT PRIMARY KEY AUTO_INCREMENT,
+  artistId     VARCHAR(255) PRIMARY KEY,
   name         VARCHAR(255) NOT NULL
 );
 
@@ -33,13 +31,13 @@ CREATE TABLE artists (
 DROP TABLE IF EXISTS albums;
 
 CREATE TABLE albums (
-  albumId     INT PRIMARY KEY AUTO_INCREMENT,
+  albumId     VARCHAR(255) PRIMARY KEY,
   name        VARCHAR(255) NOT NULL,
   releaseDate DATE NOT NULL,
   genre1      VARCHAR(255),
   genre2      VARCHAR(255),
   genre3      VARCHAR(255),
-  authorId    INT NOT NULL,
+  authorId    VARCHAR(255) NOT NULL,
   FOREIGN KEY (authorId) REFERENCES artists(artistId)
 );
 
@@ -48,7 +46,7 @@ CREATE TABLE albums (
 DROP TABLE IF EXISTS songs;
 
 CREATE TABLE songs (
-  songId      INT PRIMARY KEY,
+  songId      VARCHAR(255) PRIMARY KEY,
   title       VARCHAR(255) NOT NULL,
   length      INT NOT NULL,
   tempo       INT,
@@ -59,8 +57,8 @@ CREATE TABLE songs (
   genre3      VARCHAR(255),
   releaseDate DATE,
   timesUsed   INT,
-  albumId     INT,
-  artistId    INT NOT NULL,
+  albumId     VARCHAR(255),
+  artistId    VARCHAR(255) NOT NULL,
   FOREIGN KEY (albumId)  REFERENCES albums(albumId),
   FOREIGN KEY (artistId) REFERENCES artists(artistId)
 );
@@ -85,7 +83,7 @@ DROP TABLE IF EXISTS playlistEntry;
 CREATE TABLE playlistEntry (
   entryId     INT PRIMARY KEY AUTO_INCREMENT,
   playlistId  INT NOT NULL,
-  songId      INT NOT NULL,
+  songId      VARCHAR(255) NOT NULL,
   FOREIGN KEY (playlistId) REFERENCES playlist(playlistId),
   FOREIGN KEY (songId)     REFERENCES songs(songId)
 );

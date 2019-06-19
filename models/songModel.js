@@ -35,8 +35,8 @@ let respond = (err, res, callback) => {
 
 Song.create = (id, title, length, tempo, energy, valence, releaseDate, genres, albumId, artistId, result) => {
 
-    sql.query('INSERT INTO songs (songId, title, length, tempo, energy, valence, genre1,' +
-                ' genre2, genre3, releaseDate, timesUsed, albumId, artistId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    sql.query('INSERT INTO songs (songId, title, length, tempo, energy, valence, releaseDate, genre1,' +
+                ' genre2, genre3, timesUsed, albumId, artistId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                 [id, title, length, tempo, energy, valence, releaseDate, genres[0] || '', genres[1] || '', genres[2] || '', 1, albumId, artistId],
         (err, res) => {respond(err, res, result)})
 
