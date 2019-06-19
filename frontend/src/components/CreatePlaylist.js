@@ -45,7 +45,7 @@ class CreatePlaylist extends React.Component {
             genre: 'placeholder genre'
         };
 
-        this.trackService.createTrack(track).then(response => console.log(response));
+        //this.trackService.createTrack(track).then(response => console.log(response));
         this.state.workingPlaylist.tracks.push(convertedTrack);
 
         this.setState({workingPlaylist: this.state.workingPlaylist});
