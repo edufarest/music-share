@@ -107,6 +107,9 @@ INSERT INTO playlistEntry (playlistId, songId) VALUES ('8', '1DMEzmAoQIikcL52psp
 -- SONG IS ADDED/REMOVED TO PLAYLIST (UPDATE LENGTH, NUMOFUSES, PRIMARY GENRE?)
 
 DROP TRIGGER IF EXISTS after_entry_update;
+DROP TRIGGER IF EXISTS after_entry_delete;
+DROP TRIGGER IF EXISTS after_playlist_delete;
+
 
 DELIMITER //
 
@@ -118,6 +121,26 @@ BEGIN
   WHERE songId=NEW.songId;
 end //
 
+CREATE TRIGGER after_playlist_delete
+  AFTER DELETE ON playlist
+  FOR EACH ROW
+BEGIN
+  DELETE FROM playlistEntry WHERE playlistId=OLD.playlistId;
+end //
+
+CREATE TRIGGER after_entry_delete
+  AFTER DELETE ON playlistEntry
+  FOR EACH ROW
+BEGIN
+  UPDATE songs SET timesUsed = timesUsed - 1
+  WHERE songId=OLD.songId;
+end //
+
 DELIMITER ;
 
--- TODO TRIGGER TO DELETE PLAYLISTENTRIES IF PLAYLIST IS ERASED.
+SELECT playlist.playlistId, playlist.name as playlist, title, s.length, album.name, artist.name FROM playlist
+  INNER JOIN playlistEntry pE on playlist.playlistId = pE.playlistId
+  INNER JOIN songs s on pE.songId = s.songId
+  INNER JOIN albums album on s.albumId = album.albumId
+  INNER JOIN artists artist on album.authorId = artist.artistId
+  ORDER BY playlist.playlistId DESC LIMIT 20;

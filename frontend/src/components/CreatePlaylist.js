@@ -70,7 +70,8 @@ class CreatePlaylist extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(this.state.workingPlaylist)
-        })
+        });
+        this.props.history.push('/');
     };
 
     render() {

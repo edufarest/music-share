@@ -109,7 +109,36 @@ Playlist.create  = (playlist, res) => {
 };
 
 Playlist.getRecent = (res) => {
-    sql.query('SELECT * FROM playlist ORDER BY playlistId DESC LIMIT 20', (err, playlists) => {
+
+    let query = "SELECT playlist.playlistId, playlist.name as playlist, title, s.length, album.name, artist.name FROM playlist\n" +
+        "  INNER JOIN playlistEntry pE on playlist.playlistId = pE.playlistId\n" +
+        "  INNER JOIN songs s on pE.songId = s.songId\n" +
+        "  INNER JOIN albums album on s.albumId = album.albumId\n" +
+        "  INNER JOIN artists artist on album.authorId = artist.artistId\n" +
+        "  ORDER BY playlist.playlistId DESC LIMIT 20;"
+
+    sql.query(query, (err, result) => {
+
+        // Group playlists
+
+        let playlists = {};
+
+
+        result.forEach((playlist) => {
+
+            console.log(playlist);
+
+            let playlistId = playlist.playlistId;
+
+            if (!playlists[playlistId]) {
+                playlists[playlistId] = {
+                    name: playlist.playlist,
+                }
+            }
+        });
+
+        console.log(playlists)
+
         err ? res(err, null) : res(null, playlists);
     })
 };

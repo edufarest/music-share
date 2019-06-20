@@ -1,10 +1,26 @@
 import React from 'react'
 import {Redirect} from 'react-router'
 import PlaylistItem from './PlaylistItem'
+import PlaylistService from '../services/PlaylistService';
 
 export default class Home extends React.Component {
     constructor(props) {
         super(props);
+
+        this.playlistService = PlaylistService.getInstance();
+
+        this.playlistService.getRecent().then((res) => {
+            console.log(res);
+        });
+        //
+        // dislikes: 0
+        // isPrivate: {type: "Buffer", data: Array(1)}
+        // length: 0
+        // likes: 0
+        // name: "the playlist"
+        // numSongs: 0
+        // playlistId: 2
+        // primaryGenre: ""
 
         this.state = {
             favoritePlaylists: [
