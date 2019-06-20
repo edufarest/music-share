@@ -1,5 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
+import Cookies from 'js-cookie'
+
 
 const NavBar = () => {
     return (
@@ -29,9 +31,31 @@ const NavBar = () => {
                 <span className="navbar-text">
                     The best way to discover new playlists
                 </span>
+                {renderProfileStatus()}
+
             </div>
         </nav>
     )
+};
+
+const onLogout = () => {
+    Cookies.remove('user');
+    Cookies.remove('token');
+    window.location.reload();
+};
+
+const renderProfileStatus = () => {
+    let user = Cookies.get('user');
+    if (user) {
+        return (
+            <div>
+                <button className='btn btn-light mr-3 float-right' onClick={() => onLogout()}>
+                    Logout
+                </button>
+                <h5 className='pl-5 pr-3 mt-2 float-right'>Logged in as: {user}</h5>
+            </div>
+        )
+    }
 };
 
 export default NavBar;
