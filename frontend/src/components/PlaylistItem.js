@@ -30,6 +30,13 @@ const renderTracks = tracks => {
     return tracks.map(track => <TrackListItem track={track}/>);
 };
 
+// Obtained from https://stackoverflow.com/questions/21294302/converting-milliseconds-to-minutes-and-seconds-with-javascript
+const millisToMinutesAndSeconds = (millis) => {
+    let minutes = Math.floor(millis / 60000);
+    let seconds = ((millis % 60000) / 1000).toFixed(0);
+    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+};
+
 // On true, render a unfavorite icon, on false, render a start, on null, render nothing
 const renderFavorite = (playlist, toggleFavorite) => {
     if (!playlist.isAuthor) {
@@ -59,7 +66,7 @@ const renderAuthorIcons = isAuthor => {
 const renderStats = (playlist) => {
     return (
         <h5 className='my-3 pl-3'>
-            {playlist.length ? `length: ${playlist.length}  ` : ''}
+            {playlist.length ? `length: ${millisToMinutesAndSeconds(playlist.length)}  ` : ''}
             {playlist.primaryGenre ? `  primary genre: ${playlist.primaryGenre}  ` : ''}
             {playlist.loudness ? `  loudness: ${playlist.loudness}  ` : ''}
             {playlist.happiness ? `  happiness: ${playlist.happiness}  ` : ''}

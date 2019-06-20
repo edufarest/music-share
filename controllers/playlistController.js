@@ -9,7 +9,10 @@ module.exports = {
     },
 
     create: (req, res) => {
-        Playlist.create(req.body.name, (err, playlist) => {
+
+        console.log(req.body);
+
+        Playlist.create(req.body, (err, playlist) => {
             err ? res.send(err) : res.send(playlist);
         })
     },

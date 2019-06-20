@@ -6,6 +6,8 @@ import TrackSearchListItem from './TrackSearchListItem'
 import TrackService from '../services/TrackService'
 import '../styles/CreatePlaylist.css'
 
+const PLAYLIST_API = 'http://localhost:8000/playlists/';
+
 class CreatePlaylist extends React.Component {
     constructor(props) {
         super(props);
@@ -36,14 +38,24 @@ class CreatePlaylist extends React.Component {
     };
 
     addTrack = (track) => {
-        console.log(track);
+        // console.log(track);
         let convertedTrack = {
             id: track.id,
             name: track.name,
             artist: track.artists[0].name,
-            length: this.millisToMinutesAndSeconds(track.duration_ms),
-            genre: 'placeholder genre'
+            length: track.duration_ms,
+            genre: 'placeholder genre',
+            artistId: track.artists[0] && track.artists[0].id,
+            album:  {
+                id: track.album.id,
+                name: track.album.name,
+                releaseDate: track.album.release_date,
+                img: track.album.images[0] && track.album.images[0].url
+            }
+
         };
+
+        // console.log(convertedTrack);
 
         //this.trackService.createTrack(track).then(response => console.log(response));
         this.state.workingPlaylist.tracks.push(convertedTrack);
@@ -51,11 +63,14 @@ class CreatePlaylist extends React.Component {
         this.setState({workingPlaylist: this.state.workingPlaylist});
     };
 
-    // Obtained from https://stackoverflow.com/questions/21294302/converting-milliseconds-to-minutes-and-seconds-with-javascript
-    millisToMinutesAndSeconds = (millis) => {
-        let minutes = Math.floor(millis / 60000);
-        let seconds = ((millis % 60000) / 1000).toFixed(0);
-        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+    submitPlaylist = () => {
+        fetch(PLAYLIST_API,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.state.workingPlaylist)
+        })
     };
 
     render() {
@@ -108,7 +123,7 @@ class CreatePlaylist extends React.Component {
                 <div className='row mb-3'>
                     <span className='col-4'/>
                     <button className='mx-2 btn music-share-button col-2'
-                            onClick={() => console.log(this.state.searchInput)}>
+                            onClick={this.submitPlaylist}>
                         Submit
                     </button>
                     <button className='mx-2 btn music-share-button col-2'

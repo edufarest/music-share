@@ -3,9 +3,16 @@ use musicshare;
 -- Uncomment to be able to drop tables and run the entire script
 SET FOREIGN_KEY_CHECKS = 0;
 
--- Create Users
-
+DROP TABLE IF EXISTS playlistEntry;
+DROP TABLE IF EXISTS playlist;
+DROP TABLE IF EXISTS songs;
+DROP TABLE IF EXISTS albums;
+DROP TABLE IF EXISTS artists;
 DROP TABLE IF EXISTS users;
+
+
+
+-- Create Users
 
 -- TODO Create username and password min validation
 
@@ -17,7 +24,7 @@ CREATE TABLE users (
 
 -- Create Artists
 
-DROP TABLE IF EXISTS artists;
+
 
 CREATE TABLE artists (
   artistId     VARCHAR(255) PRIMARY KEY,
@@ -28,7 +35,7 @@ CREATE TABLE artists (
 
 -- Create Album
 
-DROP TABLE IF EXISTS albums;
+
 
 CREATE TABLE albums (
   albumId     VARCHAR(255) PRIMARY KEY,
@@ -42,8 +49,6 @@ CREATE TABLE albums (
 );
 
 -- Create Song
-
-DROP TABLE IF EXISTS songs;
 
 CREATE TABLE songs (
   songId      VARCHAR(255) PRIMARY KEY,
@@ -65,7 +70,7 @@ CREATE TABLE songs (
 
 -- Playlists
 
-DROP TABLE IF EXISTS playlists;
+
 
 CREATE TABLE playlist (
   playlistId   INT PRIMARY KEY AUTO_INCREMENT,
@@ -78,7 +83,7 @@ CREATE TABLE playlist (
   primaryGenre VARCHAR(255)
 );
 
-DROP TABLE IF EXISTS playlistEntry;
+
 
 CREATE TABLE playlistEntry (
   entryId     INT PRIMARY KEY AUTO_INCREMENT,
@@ -87,3 +92,5 @@ CREATE TABLE playlistEntry (
   FOREIGN KEY (playlistId) REFERENCES playlist(playlistId),
   FOREIGN KEY (songId)     REFERENCES songs(songId)
 );
+
+select * from artists;
