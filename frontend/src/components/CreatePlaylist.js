@@ -4,15 +4,15 @@ import {withRouter} from 'react-router-dom'
 import PlaylistItem from './PlaylistItem'
 import TrackSearchListItem from './TrackSearchListItem'
 import TrackService from '../services/TrackService'
+import PlaylistService from '../services/PlaylistService'
 import '../styles/CreatePlaylist.css'
-
-const PLAYLIST_API = 'http://localhost:8000/playlists/';
 
 class CreatePlaylist extends React.Component {
     constructor(props) {
         super(props);
 
         this.trackService = TrackService.getInstance();
+        this.playlistService = PlaylistService.getInstance();
 
         this.state = {
             search: [],
@@ -26,6 +26,9 @@ class CreatePlaylist extends React.Component {
     }
 
     searchTracks() {
+        if (this.state.searchInput == '') {
+            return;
+        }
         this.trackService.searchTracks(this.state.searchInput).then (
             data => {
                 this.setState({search: data.tracks.items});
@@ -37,8 +40,12 @@ class CreatePlaylist extends React.Component {
         return this.state.search.map(track => <TrackSearchListItem track={track} addTrack={this.addTrack}/>)
     };
 
+    submitPlaylist = () => {
+        this.playlistService.submitPlaylist(this.state.workingPlaylist);
+        this.props.history.push('/')
+    };
+
     addTrack = (track) => {
-        // console.log(track);
         let convertedTrack = {
             id: track.id,
             name: track.name,
@@ -55,23 +62,9 @@ class CreatePlaylist extends React.Component {
 
         };
 
-        // console.log(convertedTrack);
-
-        //this.trackService.createTrack(track).then(response => console.log(response));
         this.state.workingPlaylist.tracks.push(convertedTrack);
 
         this.setState({workingPlaylist: this.state.workingPlaylist});
-    };
-
-    submitPlaylist = () => {
-        fetch(PLAYLIST_API,{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(this.state.workingPlaylist)
-        });
-        this.props.history.push('/');
     };
 
     render() {
@@ -124,7 +117,7 @@ class CreatePlaylist extends React.Component {
                 <div className='row mb-3'>
                     <span className='col-4'/>
                     <button className='mx-2 btn music-share-button col-2'
-                            onClick={this.submitPlaylist}>
+                            onClick={() => this.submitPlaylist()}>
                         Submit
                     </button>
                     <button className='mx-2 btn music-share-button col-2'

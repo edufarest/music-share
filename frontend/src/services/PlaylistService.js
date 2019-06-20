@@ -14,5 +14,17 @@ export default class PlaylistService {
 
     getRecent = () => {
         return fetch(PLAYLIST_API_URL).then((res) => res.json());
-    }
+    };
+
+    submitPlaylist = (playlist) => {
+        return fetch(PLAYLIST_API_URL,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(playlist)
+        }).then(res => res.json());
+
+    };
+
 }
