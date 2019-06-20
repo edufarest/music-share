@@ -45,7 +45,6 @@ CREATE TABLE albums (
                       genre2      VARCHAR(255),
                       genre3      VARCHAR(255),
                       authorId    VARCHAR(255) NOT NULL,
-                      image       VARCHAR(255),
                       FOREIGN KEY (authorId) REFERENCES artists(artistId)
 );
 
@@ -95,10 +94,4 @@ CREATE TABLE playlistEntry (
 );
 
 select * from artists;
-select * from albums;
-
 select * from songs;
-
-
-
-DELIMITER ;

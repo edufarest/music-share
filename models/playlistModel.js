@@ -47,7 +47,8 @@ Playlist.create  = (playlist, res) => {
     let albumQuery = "INSERT IGNORE INTO albums (albumId, name, releaseDate, genre1, genre2, genre3, authorId, image)  VALUES ";
 
     // TODO Fetch
-    let songQuery  = "";//"INSERT IGNORE INTO songs (songId, title, length, tempo, energy, valence, genre1, genre2, genre3, releaseDate, timesUsed, albumId, artistId) VALUES ";
+    // FIXME Procedures dont work, try
+    let songQuery  = "INSERT IGNORE INTO songs (songId, title, length, tempo, energy, valence, genre1, genre2, genre3, releaseDate, timesUsed, albumId, artistId) VALUES ";
     playlist.tracks.forEach((track) => {
 
         let artist = {id: track.artistId, name: track.artist};
@@ -57,15 +58,18 @@ Playlist.create  = (playlist, res) => {
             authorId: track.artistId, image: track.album.img};
         albumQuery += `('${album.id}', '${album.name}', '${album.releaseDate}', '', '', '', '${album.authorId}', '${album.image}'), `;
 
-        songQuery += `CALL AddOrIncSong('${track.id}', '${track.name}', ${track.length}, '', '', '', '', '', '', '${track.releaseDate}',
-         1, '${track.album.id}', '${track.artistId}'); `
+        songQuery += `('${track.id}', "${track.name}", ${track.length}, 0, 0, 0, '', '', '', '${track.album.releaseDate}',
+         1, '${track.album.id}', '${track.artistId}'), `
     });
 
     // Remove trailing comma and end query
     artistQuery = artistQuery.substr(0, artistQuery.length - 2) + "; \n";
     albumQuery  = albumQuery.substr(0, albumQuery.length - 2) + "; \n";
+    songQuery   = songQuery.substr(0, songQuery.length - 2) + "; \n";
 
     let query = artistQuery + albumQuery + songQuery;
+
+    console.log(query);
 
     // Create artists
     sql.query(query, (err, result) => {
