@@ -121,7 +121,14 @@ Playlist.getRecent = (res) => {
 
         // Group playlists
 
-        let playlists = {};
+        // playlistId: 1,
+        //     playlist: 'the playlist',
+        //     title: 'TEST DRIVE',
+        //     length: 179423,
+        //     name: 'Joji' }
+
+
+    let playlists = {};
 
 
         result.forEach((playlist) => {
@@ -133,11 +140,19 @@ Playlist.getRecent = (res) => {
             if (!playlists[playlistId]) {
                 playlists[playlistId] = {
                     name: playlist.playlist,
+                    tracks: []
                 }
             }
+
+            playlists[playlistId].tracks.push({
+                name: playlist.title,
+                artist: playlist.name,
+                length: playlist.length,
+            })
+
         });
 
-        console.log(playlists)
+        console.log(playlists);
 
         err ? res(err, null) : res(null, playlists);
     })

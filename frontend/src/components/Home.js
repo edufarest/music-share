@@ -9,19 +9,6 @@ export default class Home extends React.Component {
 
         this.playlistService = PlaylistService.getInstance();
 
-        this.playlistService.getRecent().then((res) => {
-            console.log(res);
-        });
-        //
-        // dislikes: 0
-        // isPrivate: {type: "Buffer", data: Array(1)}
-        // length: 0
-        // likes: 0
-        // name: "the playlist"
-        // numSongs: 0
-        // playlistId: 2
-        // primaryGenre: ""
-
         this.state = {
             favoritePlaylists: [
                 {
@@ -104,52 +91,26 @@ export default class Home extends React.Component {
                             length: '3:41',
                             genre: 'jazz, funk'
                         },
-                        {
-                            name: 'DNA',
-                            artist: 'Kendrick Lamar',
-                            length: '2:56',
-                            genre: 'hip hop, hardcore hip hop'
-                        },
-                        {
-                            name: 'Mind Mischief',
-                            artist: 'Tame Impala',
-                            length: '4:23',
-                            genre: 'psychedelic rock'
-                        },
-                        {
-                            name: '1539 N. Calvert',
-                            artist: 'JPEGMAFIA',
-                            length: '2:37',
-                            genre: 'glitch hop'
-                        },
-                        {
-                            name: 'Reborn',
-                            artist: 'KIDS SEE GHOSTS',
-                            length: '3:42',
-                            genre: 'hip hop, psychedelic hip hop'
-                        },
-                        {
-                            name: 'Breathing Underwater',
-                            artist: 'Hiatus Kaiyote',
-                            length: '5:36',
-                            genre: 'future soul, neo-soul'
-                        },
-                        {
-                            name: 'EARFQUAKE',
-                            artist: 'Tyler, The Creator',
-                            length: '3:10',
-                            genre: 'R&B, hip hop'
-                        },
-                        {
-                            name: 'Decks Dark',
-                            artist: 'Radiohead',
-                            length: '3:41',
-                            genre: 'art rock, rock'
-                        },
                     ]
                 }
             ],
         };
+
+        this.playlistService.getRecent().then((res) => {
+
+            let playlists = [];
+
+            console.log(res);
+
+            for (let i in res) {
+                playlists.push(res[i]);
+            }
+
+            console.log(playlists);
+
+            this.setState({recentPlaylists: playlists});
+
+        });
     }
 
     render() {
