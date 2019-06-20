@@ -58,6 +58,7 @@ CREATE TABLE songs (
                      tempo       INT,
                      energy      FLOAT,
                      valence     FLOAT,
+                     loudness    FLOAT,
                      genre1      VARCHAR(255),
                      genre2      VARCHAR(255),
                      genre3      VARCHAR(255),
@@ -81,7 +82,9 @@ CREATE TABLE playlist (
                         dislikes     INT NOT NULL DEFAULT 0,
                         numSongs     INT NOT NULL DEFAULT 0,
                         length       INT NOT NULL DEFAULT 0,
-                        primaryGenre VARCHAR(255) DEFAULT ''
+                        primaryGenre VARCHAR(255) DEFAULT '',
+                        owner        VARCHAR(255) NOT NULL,
+                        FOREIGN KEY (owner) REFERENCES users(username)
 );
 
 
@@ -94,13 +97,6 @@ CREATE TABLE playlistEntry (
                              FOREIGN KEY (songId)     REFERENCES songs(songId)
 );
 
-select * from artists;
-select * from songs;
-
-select * from playlist;
-select * from playlistEntry;
-
-INSERT INTO playlistEntry (playlistId, songId) VALUES ('8', '1DMEzmAoQIikcL52psptQL');
 
 -- TRIGGERS
 
@@ -110,6 +106,8 @@ DROP TRIGGER IF EXISTS after_entry_update;
 DROP TRIGGER IF EXISTS after_entry_delete;
 DROP TRIGGER IF EXISTS after_playlist_delete;
 
+select * from songs;
+select * from playlist;
 
 DELIMITER //
 
@@ -137,10 +135,3 @@ BEGIN
 end //
 
 DELIMITER ;
-
-SELECT playlist.playlistId, playlist.name as playlist, title, s.length, album.name, artist.name FROM playlist
-  INNER JOIN playlistEntry pE on playlist.playlistId = pE.playlistId
-  INNER JOIN songs s on pE.songId = s.songId
-  INNER JOIN albums album on s.albumId = album.albumId
-  INNER JOIN artists artist on album.authorId = artist.artistId
-  ORDER BY playlist.playlistId DESC LIMIT 20;

@@ -5,7 +5,7 @@ let playlist = require('../controllers/playlistController');
 
 router.get('/', playlist.list_recent);
 
-router.post('/', playlist.create);
+router.post('/:username', playlist.create);
 
 router.get('/:id', playlist.get_playlist);
 

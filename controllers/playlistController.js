@@ -12,7 +12,7 @@ module.exports = {
 
         console.log(req.body);
 
-        Playlist.create(req.body, (err, playlist) => {
+        Playlist.create(req.params.username, req.body, (err, playlist) => {
             err ? res.send(err) : res.send(playlist);
         })
     },
