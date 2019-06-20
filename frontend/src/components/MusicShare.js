@@ -29,7 +29,8 @@ export default class MusicShare extends React.Component {
                         {this.checkSession()}
                         <NavBar/>
                         <Route exact path='/' component={() => <Home user={this.state.user}/>}/>
-                        <Route path='/login' component={() => <Login user={this.state.user} onLogin={this.onLogin}/>}/>
+                        <Route path='/login' component={() => <Login user={this.state.user} onLogin={this.onLogin}
+                                                                     onRegister={this.onRegister}/>}/>
                         <Route path='/createPlaylist' component={() => <CreatePlaylist user={this.state.user}/>}/>
                         <Route path='/profile' component={() => <Profile user={this.state.user}/>}/>
                     </Router>
@@ -54,5 +55,13 @@ export default class MusicShare extends React.Component {
                 this.setState({user: Cookies.get('user')})
             }
         })
-    }
+    };
+
+    onRegister = (username, password, email) => {
+        this.authService.register(username, password, email).then(data => {
+            if (data != null) {
+                this.onLogin(username, password);
+            }
+        })
+    };
 }
