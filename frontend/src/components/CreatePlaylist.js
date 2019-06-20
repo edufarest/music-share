@@ -41,7 +41,7 @@ class CreatePlaylist extends React.Component {
     };
 
     submitPlaylist = () => {
-        this.playlistService.submitPlaylist(this.state.workingPlaylist);
+        this.playlistService.submitPlaylist(this.state.workingPlaylist, this.props.user);
         this.props.history.push('/')
     };
 

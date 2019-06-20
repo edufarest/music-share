@@ -16,8 +16,8 @@ export default class PlaylistService {
         return fetch(PLAYLIST_API_URL).then((res) => res.json());
     };
 
-    submitPlaylist = (playlist) => {
-        return fetch(PLAYLIST_API_URL,{
+    submitPlaylist = (playlist, username) => {
+        return fetch(PLAYLIST_API_URL + '/' + username,{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
