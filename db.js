@@ -11,7 +11,8 @@ var connection = mysql.createConnection({
     host    : 'localhost',
     user    :  user,
     password:  password,
-    database: 'musicshare'
+    database: 'musicshare',
+    multipleStatements: true,
 });
 
 connection.connect();
