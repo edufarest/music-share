@@ -2,6 +2,8 @@
 
 const sql = require('../db.js');
 
+let Song = require('../controllers/songController');
+
 
 let Playlist = (playlist) => {
     this.name = playlist.name;
@@ -16,7 +18,7 @@ let Playlist = (playlist) => {
     this.owner = playlist.owner;
 };
 
-Playlist.create  = (playlist, res) => {
+Playlist.create  = (user, playlist, res) => {
 
     // 1. Create artist (if not exist)
     // 2. Create album (if not exist)
@@ -68,13 +70,13 @@ Playlist.create  = (playlist, res) => {
 
     let query = artistQuery + albumQuery + songQuery;
 
-    console.log(query);
+    let songsIds = [];
 
     // Create artists, albums, and songs
     sql.query(query, (err, result) => {
 
         // Create playlist
-        let playlistQuery = `INSERT INTO playlist (name, isPrivate) VALUES ('${playlist.name}', 0)`;
+        let playlistQuery = `INSERT INTO playlist (name, isPrivate, owner) VALUES ('${playlist.name}', 0, '${user}')`;
 
         sql.query(playlistQuery, (err, result) => {
             console.log(result.insertId);
@@ -90,6 +92,7 @@ Playlist.create  = (playlist, res) => {
 
             playlist.tracks.forEach((track) => {
                 entries += `(${result.insertId}, '${track.id}'), `
+                songsIds.push(track.id);
             })
 
             entries = entries.substr(0, entries.length - 2) + "; \n"
@@ -97,9 +100,14 @@ Playlist.create  = (playlist, res) => {
             console.log(entries);
 
             sql.query(entries, (err, result) => {
-                console.log(result);
-                console.log(err);
-                err ? res(err, null) : res(null, result);
+                if (err) {
+                    res(err, null)
+                } else {
+
+                    Song.getAudioFeatures(songsIds);
+
+                    res(null, result)
+                };
             })
 
         })
@@ -110,7 +118,7 @@ Playlist.create  = (playlist, res) => {
 
 Playlist.getRecent = (res) => {
 
-    let query = "SELECT playlist.playlistId, playlist.name as playlist, title, s.length, album.name, artist.name FROM playlist\n" +
+    let query = "SELECT playlist.playlistId, playlist.name as playlist, owner, title, s.length, album.name, artist.name FROM playlist\n" +
         "  INNER JOIN playlistEntry pE on playlist.playlistId = pE.playlistId\n" +
         "  INNER JOIN songs s on pE.songId = s.songId\n" +
         "  INNER JOIN albums album on s.albumId = album.albumId\n" +
@@ -140,6 +148,7 @@ Playlist.getRecent = (res) => {
             if (!playlists[playlistId]) {
                 playlists[playlistId] = {
                     name: playlist.playlist,
+                    author: playlist.owner,
                     tracks: []
                 }
             }

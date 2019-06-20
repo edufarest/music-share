@@ -1,5 +1,9 @@
 let Song = require('../models/songModel');
 
+const fetch = require("node-fetch");
+
+require('dotenv').config();
+
 module.exports = {
 
     list_all: (req, res) => {
@@ -65,6 +69,60 @@ module.exports = {
         Song.delete(req.params.id, (err, result) => {
             err ? res.send(err) : res.send(result);
         })
+
+    },
+
+    getAudioFeatures: (songs) => {
+
+        let uri = "https://accounts.spotify.com/api/token";
+
+        // { audio_features:
+        //     [ { danceability: 0.638,
+        //         energy: 0.523,
+        //         key: 1,
+        //         loudness: -6.664,
+        //         mode: 1,
+        //         speechiness: 0.357,
+        //         acousticness: 0.00454,
+        //         instrumentalness: 0,
+        //         liveness: 0.0842,
+        //         valence: 0.422,
+        //         tempo: 139.913,
+        //         type: 'audio_features',
+        //         id: '6HZILIRieu8S0iqY8kIKhj',
+        //         uri: 'spotify:track:6HZILIRieu8S0iqY8kIKhj',
+        //         track_href: 'https://api.spotify.com/v1/tracks/6HZILIRieu8S0iqY8kIKhj',
+        //         analysis_url:
+        //             'https://api.spotify.com/v1/audio-analysis/6HZILIRieu8S0iqY8kIKhj',
+        //         duration_ms: 185947,
+        //         time_signature: 4 } ] }
+
+
+        fetch(uri, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Basic ${process.env.ACCESSTOKEN}`
+            },
+            body: "grant_type=client_credentials",
+        }).then((response) => {
+            response.json().then((res) => {
+                let token = res.access_token;
+
+                fetch('https://api.spotify.com/v1/audio-features/?ids=' + songs.join(","), {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }).then((res) => {
+                    res.json().then((res) => {
+                        res.audio_features.forEach((track) => {
+                            Song.addAudioFeatures(track.id, track.tempo, track.energy, track.valence, track.loudness);
+                        })
+                    })
+                })
+
+            })
+        });
 
     }
 

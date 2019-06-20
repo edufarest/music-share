@@ -93,6 +93,27 @@ Song.updateUsage = (id, increase, result) => {
     })
 };
 
+// this.songId = song.songId;
+// this.title  = song.title;
+// this.length = song.length;
+// this.tempo  = song.tempo;
+// this.energy = song.energy;
+// this.valence= song.valence;
+// this.genre1 = song.genre1;
+// this.genre2 = song.genre2;
+// this.genre3 = song.genre3;
+// this.releaseDate = song.releaseDate;
+// this.timesUsed   = song.timesUsed;
+// this.artistId    = song.artistId;
+// this.albumId     = song.albumId;
+
+Song.addAudioFeatures = (id, tempo, energy, valence, loudness) => {
+    sql.query("UPDATE songs SET tempo=?, energy=?, valence=?, loudness=? WHERE songId=?",
+        [tempo, energy, valence, loudness, id], (err, res) => {
+        console.log(err ? err : res);
+    })
+}
+
 Song.delete = (id, result) => {
     sql.query('DELETE FROM songs WHERE songId=?', id, (err, res) => {
         respond(err, res, result);
