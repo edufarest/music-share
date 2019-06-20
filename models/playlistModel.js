@@ -26,29 +26,48 @@ Playlist.create  = (playlist, res) => {
 
     // Get all artists from given playlist
 
-    // console.log(playlist.tracks);
+    console.log(playlist.tracks);
 
-    let query = ""; // Final query to be done;
+    // { id: '6HZILIRieu8S0iqY8kIKhj',
+    //     name: 'DNA.',
+    //     artist: 'Kendrick Lamar',
+    //     length: 185946,
+    //     genre: 'placeholder genre',
+    //     artistId: '2YZyLoL8N0Wb9xBt1NhZWg',
+    //     album:
+    //     { id: '4eLPsYPBmXABThSJ821sqY',
+    //         name: 'DAMN.',
+    //         releaseDate: '2017-04-14',
+    //         img:
+    //         'https://i.scdn.co/image/4988546859334f9a5a3fa4acedc5aea275929026' } }
 
-    let artistIds = []; // Used for search algorithm
+    let artistQuery = "INSERT IGNORE INTO artists (artistId, name) VALUES ";
 
-    query += "INSERT IGNORE INTO artists (artistId, name) VALUES ";
+    // TODO Fetch genres
+    let albumQuery = "INSERT IGNORE INTO albums (albumId, name, releaseDate, genre1, genre2, genre3, authorId, image)  VALUES ";
 
+    // TODO Fetch
+    let songQuery  = "";//"INSERT IGNORE INTO songs (songId, title, length, tempo, energy, valence, genre1, genre2, genre3, releaseDate, timesUsed, albumId, artistId) VALUES ";
     playlist.tracks.forEach((track) => {
-        console.log(track);
-        let artist = {id: track.artistId, name: track.artist};
 
-        if (!artistIds.includes(artist.id)) {
-            artistIds.push(artist.id);
-            query += `('${artist.id}', '${artist.name}'), `
-        }
+        let artist = {id: track.artistId, name: track.artist};
+        artistQuery += `('${artist.id}', '${artist.name}'), `;
+
+        let album  = {id: track.album.id, name: track.album.name, releaseDate: track.album.releaseDate,
+            authorId: track.artistId, image: track.album.img};
+        albumQuery += `('${album.id}', '${album.name}', '${album.releaseDate}', '', '', '', '${album.authorId}', '${album.image}'), `;
+
+        songQuery += `CALL AddOrIncSong('${track.id}', '${track.name}', ${track.length}, '', '', '', '', '', '', '${track.releaseDate}',
+         1, '${track.album.id}', '${track.artistId}'); `
     });
 
-    // Remove trailing comma
-    query = query.substr(0, query.length - 2);
+    // Remove trailing comma and end query
+    artistQuery = artistQuery.substr(0, artistQuery.length - 2) + "; \n";
+    albumQuery  = albumQuery.substr(0, albumQuery.length - 2) + "; \n";
 
-    console.log(query);
+    let query = artistQuery + albumQuery + songQuery;
 
+    // Create artists
     sql.query(query, (err, result) => {
         console.log(result);
         err ? res(err, null) : res(null, result);
