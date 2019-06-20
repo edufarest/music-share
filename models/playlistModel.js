@@ -47,7 +47,6 @@ Playlist.create  = (playlist, res) => {
     let albumQuery = "INSERT IGNORE INTO albums (albumId, name, releaseDate, genre1, genre2, genre3, authorId, image)  VALUES ";
 
     // TODO Fetch
-    // FIXME Procedures dont work, try
     let songQuery  = "INSERT IGNORE INTO songs (songId, title, length, tempo, energy, valence, genre1, genre2, genre3, releaseDate, timesUsed, albumId, artistId) VALUES ";
     playlist.tracks.forEach((track) => {
 
@@ -56,10 +55,10 @@ Playlist.create  = (playlist, res) => {
 
         let album  = {id: track.album.id, name: track.album.name, releaseDate: track.album.releaseDate,
             authorId: track.artistId, image: track.album.img};
-        albumQuery += `('${album.id}', '${album.name}', '${album.releaseDate}', '', '', '', '${album.authorId}', '${album.image}'), `;
+        albumQuery += `('${album.id}', '${album.name}', '${album.releaseDate}', '', '', '', '${album.authorId}', '${album.img}'), `;
 
         songQuery += `('${track.id}', "${track.name}", ${track.length}, 0, 0, 0, '', '', '', '${track.album.releaseDate}',
-         1, '${track.album.id}', '${track.artistId}'), `
+         0, '${track.album.id}', '${track.artistId}'), `
     });
 
     // Remove trailing comma and end query
@@ -71,11 +70,42 @@ Playlist.create  = (playlist, res) => {
 
     console.log(query);
 
-    // Create artists
+    // Create artists, albums, and songs
     sql.query(query, (err, result) => {
-        console.log(result);
-        err ? res(err, null) : res(null, result);
-    })
+
+        // Create playlist
+        let playlistQuery = `INSERT INTO playlist (name, isPrivate) VALUES ('${playlist.name}', 0)`;
+
+        sql.query(playlistQuery, (err, result) => {
+            console.log(result.insertId);
+            // err ? res(err, null) : res(null, result);
+
+            if (err) {
+                console.error(err);
+            } else if (!result.insertId) {
+                console.error("No result id");
+            }
+
+            let entries = "INSERT INTO playlistEntry (playlistId, songId) VALUES ";
+
+            playlist.tracks.forEach((track) => {
+                entries += `(${result.insertId}, '${track.id}'), `
+            })
+
+            entries = entries.substr(0, entries.length - 2) + "; \n"
+
+            console.log(entries);
+
+            sql.query(entries, (err, result) => {
+                console.log(result);
+                console.log(err);
+                err ? res(err, null) : res(null, result);
+            })
+
+        })
+    });
+
+
 };
 
 Playlist.getRecent = (res) => {

@@ -45,6 +45,7 @@ CREATE TABLE albums (
                       genre2      VARCHAR(255),
                       genre3      VARCHAR(255),
                       authorId    VARCHAR(255) NOT NULL,
+                      image       VARCHAR(255),
                       FOREIGN KEY (authorId) REFERENCES artists(artistId)
 );
 
@@ -76,11 +77,11 @@ CREATE TABLE playlist (
                         playlistId   INT PRIMARY KEY AUTO_INCREMENT,
                         name         VARCHAR(255) NOT NULL,
                         isPrivate    BIT NOT NULL,
-                        likes        INT NOT NULL,
-                        dislikes     INT NOT NULL,
-                        numSongs     INT NOT NULL,
-                        length       INT NOT NULL,
-                        primaryGenre VARCHAR(255)
+                        likes        INT NOT NULL DEFAULT 0,
+                        dislikes     INT NOT NULL DEFAULT 0,
+                        numSongs     INT NOT NULL DEFAULT 0,
+                        length       INT NOT NULL DEFAULT 0,
+                        primaryGenre VARCHAR(255) DEFAULT ''
 );
 
 
@@ -95,3 +96,28 @@ CREATE TABLE playlistEntry (
 
 select * from artists;
 select * from songs;
+
+select * from playlist;
+select * from playlistEntry;
+
+INSERT INTO playlistEntry (playlistId, songId) VALUES ('8', '1DMEzmAoQIikcL52psptQL');
+
+-- TRIGGERS
+
+-- SONG IS ADDED/REMOVED TO PLAYLIST (UPDATE LENGTH, NUMOFUSES, PRIMARY GENRE?)
+
+DROP TRIGGER IF EXISTS after_entry_update;
+
+DELIMITER //
+
+CREATE TRIGGER after_entry_update
+  AFTER INSERT ON playlistEntry
+  FOR EACH ROW
+BEGIN
+  UPDATE songs SET timesUsed = timesUsed + 1
+  WHERE songId=NEW.songId;
+end //
+
+DELIMITER ;
+
+-- TODO TRIGGER TO DELETE PLAYLISTENTRIES IF PLAYLIST IS ERASED.
