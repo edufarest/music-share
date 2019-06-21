@@ -51,6 +51,12 @@ module.exports = {
         Playlist.favorite(req.params.id, req.params.username, false, (err, result) => {
             err ? res.send(err) : res.send(result);
         })
+    },
+
+    getFavorites: (req, res) => {
+        Playlist.getFavorites(req.params.username, (err, result) => {
+            err ? res.send(err) : res.send(result);
+        })
     }
 
 };

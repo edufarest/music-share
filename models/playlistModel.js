@@ -207,6 +207,14 @@ Playlist.favorite = (id, user, isFavorite, res) => {
     sql.query(query, (err, result) => {
         err ? res(err, null) : res(null, result);
     })
+};
+
+Playlist.getFavorites = (user, res) => {
+
+    sql.query('select * from playlist inner join favPlaylist fP on playlist.playlistId = fP.playlistId and username = ?',
+        user, (err, result) => {
+            err ? res(err, null) : res(null, result);
+        })
 }
 
 module.exports = Playlist;

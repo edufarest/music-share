@@ -172,4 +172,4 @@ SELECT playlist.playlistId, playlist.name as playlist, owner, title, s.length,
           ORDER BY playlist.playlistId DESC LIMIT 20;
 
 
-select * from favPlaylist;
+select * from playlist inner join favPlaylist fP on playlist.playlistId = fP.playlistId and username = 'jose';

@@ -9,7 +9,9 @@ router.post('/:username', playlist.create);
 
 router.post('/fav/:id/:username', playlist.favorite);
 
-router.delete('/fav/:id/:username', playlist.disfavorite)
+router.delete('/fav/:id/:username', playlist.disfavorite);
+
+router.get('/fav/:username', playlist.getFavorites);
 
 router.get('/:id', playlist.get_playlist);
 
