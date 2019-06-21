@@ -2,6 +2,7 @@ import React from 'react'
 import {Redirect} from 'react-router'
 import PlaylistItem from './PlaylistItem'
 import PlaylistService from '../services/PlaylistService';
+import Cookies from 'js-cookie'
 
 export default class Home extends React.Component {
     constructor(props) {
@@ -10,107 +11,11 @@ export default class Home extends React.Component {
         this.playlistService = PlaylistService.getInstance();
 
         this.state = {
-            favoritePlaylists: [
-                {
-                    name: 'Real Cool Playlist',
-                    author: 'john',
-                    length: '43:23',
-                    primaryGenre: 'hip hop',
-                    loudness: '0.73',
-                    danceability: '0.43',
-                    happiness: '0.48',
-                    isAuthor: false,
-                    isFavorited: true,
-                    tracks: [
-                        {
-                            name: 'Them Changes',
-                            artist: 'Thundercat',
-                            length: '3:41',
-                            genre: 'jazz, funk'
-                        },
-                        {
-                            name: 'DNA',
-                            artist: 'Kendrick Lamar',
-                            length: '2:56',
-                            genre: 'hip hop, hardcore hip hop'
-                        },
-                        {
-                            name: 'Mind Mischief',
-                            artist: 'Tame Impala',
-                            length: '4:23',
-                            genre: 'psychedelic rock'
-                        },
-                        {
-                            name: '1539 N. Calvert',
-                            artist: 'JPEGMAFIA',
-                            length: '2:37',
-                            genre: 'glitch hop'
-                        },
-                        {
-                            name: 'Reborn',
-                            artist: 'KIDS SEE GHOSTS',
-                            length: '3:42',
-                            genre: 'hip hop, psychedelic hip hop'
-                        },
-                        {
-                            name: 'Breathing Underwater',
-                            artist: 'Hiatus Kaiyote',
-                            length: '5:36',
-                            genre: 'future soul, neo-soul'
-                        },
-                        {
-                            name: 'EARFQUAKE',
-                            artist: 'Tyler, The Creator',
-                            length: '3:10',
-                            genre: 'R&B, hip hop'
-                        },
-                        {
-                            name: 'Decks Dark',
-                            artist: 'Radiohead',
-                            length: '3:41',
-                            genre: 'art rock, rock'
-                        },
-                    ]
-                }
-            ],
-            recentPlaylists: [
-                {
-                    name: 'Real Cool Playlist',
-                    author: 'john',
-                    length: '43:23',
-                    primaryGenre: 'hip hop',
-                    loudness: '0.73',
-                    danceability: '0.43',
-                    happiness: '0.48',
-                    isAuthor: false,
-                    isFavorited: true,
-                    tracks: [
-                        {
-                            name: 'Them Changes',
-                            artist: 'Thundercat',
-                            length: '3:41',
-                            genre: 'jazz, funk'
-                        },
-                    ]
-                }
-            ],
+            favoritePlaylists: [],
+            recentPlaylists: [],
+            user: Cookies.get('user')
         };
-
-        this.playlistService.getRecent().then((res) => {
-
-            let playlists = [];
-
-            console.log(res);
-
-            for (let i in res) {
-                playlists.push(res[i]);
-            }
-
-            console.log(playlists);
-
-            this.setState({recentPlaylists: playlists});
-
-        });
+        this.fetchPlaylists();
     }
 
     render() {
@@ -133,11 +38,53 @@ export default class Home extends React.Component {
         );
     }
 
+    toggleFavorite = (playlist) => {
+        if (playlist.isFavorited) {
+            this.playlistService.deleteFavoritePlaylist(this.state.user, playlist.id)
+        } else {
+            this.playlistService.favoritePlaylist(this.state.user, playlist.id)
+        }
+        this.setState({favoritePlaylists: [], recentPlaylists: []});
+        this.sleep(50).then(() => this.fetchPlaylists())
+
+    };
+
     renderPlaylists = (playlists) => {
         return playlists.map(playlist =>
-            <PlaylistItem playlist={playlist} isFavorited={false} isAuthor={playlist.author == this.props.session}/>
+            <PlaylistItem playlist={playlist} isFavorited={playlist.isFavorited} isAuthor={playlist.author == this.state.user}
+                toggleFavorite={this.toggleFavorite}/>
         )
+    };
+
+    fetchPlaylists = () => {
+        this.playlistService.getFavoritePlaylistsByUser(this.state.user).then((res) => {
+            let playlists = [];
+            for (let i in res) {
+                res[i].id = i;
+                res[i].isFavorited = true;
+                playlists.push(res[i]);
+            }
+            console.log(playlists);
+            this.setState({favoritePlaylists: playlists});
+
+            this.playlistService.getRecent().then((res) => {
+                let playlists = [];
+                for (let i in res) {
+                    res[i].id = i;
+                    if (this.state.favoritePlaylists.find(favorite => favorite.id == res[i].id)) {
+                        res[i].isFavorited = true;
+                    } else {
+                        res[i].isFavorited = false;
+                    }
+                    playlists.push(res[i]);
+                }
+                console.log(playlists);
+                this.setState({recentPlaylists: playlists});
+            });
+        });
     }
 
-
+    sleep = (time) => {
+        return new Promise((resolve) => setTimeout(resolve, time));
+    }
 }

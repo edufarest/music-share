@@ -17,7 +17,7 @@ export default class PlaylistService {
     };
 
     submitPlaylist = (playlist, username) => {
-        return fetch(PLAYLIST_API_URL + '/' + username,{
+        return fetch(PLAYLIST_API_URL + '/' + username, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -26,5 +26,25 @@ export default class PlaylistService {
         }).then(res => res.json());
 
     };
+
+    getPlaylistsByUser = (username) => {
+        return fetch(PLAYLIST_API_URL + '/' + username).then(res => res.json());
+    };
+
+    getFavoritePlaylistsByUser = (username) => {
+        return fetch(PLAYLIST_API_URL + '/fav/' + username).then(res => res.json());
+    };
+
+    favoritePlaylist = (username, playlistId) => {
+        return fetch(PLAYLIST_API_URL + '/fav/' + playlistId + '/' + username, {
+            method: "POST"
+        }).then(res => res.json);
+    };
+
+    deleteFavoritePlaylist = (username, playlistId) => {
+        return fetch(PLAYLIST_API_URL + '/fav/' + playlistId + '/' + username, {
+            method: "DELETE"
+        }).then(res => res.json);
+    }
 
 }

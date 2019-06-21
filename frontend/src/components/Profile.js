@@ -1,10 +1,13 @@
 import React from 'react';
 import {Redirect} from 'react-router'
 import PlaylistItem from './PlaylistItem'
+import PlaylistService from '../services/PlaylistService'
 
 export default class Profile extends React.Component {
     constructor(props) {
         super(props);
+
+        this.playlistService = PlaylistService.getInstance();
 
         this.state = {
             userPlaylists: [
@@ -72,7 +75,12 @@ export default class Profile extends React.Component {
             ],
             emailField: '',
             passwordField: ''
-        }
+        };
+
+        this.playlistService.getPlaylistsByUser(this.props.user).then(playlists => {
+            this.setState({userPlaylists: playlists});
+        });
+
     }
 
     render() {

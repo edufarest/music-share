@@ -2,12 +2,10 @@ import React from 'react'
 import '../styles/PlaylistListItem.css'
 import TrackListItem from './TrackListItem'
 
-
-//TODO: Make the individual tracks removable if in edit mode, in TrackListItem
-const PlaylistItem = ({playlist, toggleFavorite}) =>
+const PlaylistItem = ({playlist, isAuthor, isFavorited, toggleFavorite}) =>
     <div className='music-share-playlist music-share-text bg-dark'>
-        {renderAuthorIcons(playlist.isAuthor)}
-        {renderFavorite(playlist, toggleFavorite)}
+        {renderAuthorIcons(isAuthor)}
+        {renderFavorite(playlist, isFavorited, isAuthor, toggleFavorite)}
         <h3 className='mt-2 ml-3'>{playlist.name}</h3>
         <h5 className='mt-2 mb-3 ml-3'> Created by:  {playlist.author}</h5>
         <ul className='mb-3 list-group music-share-track-list overflow-auto'>
@@ -24,9 +22,7 @@ const PlaylistItem = ({playlist, toggleFavorite}) =>
         {renderStats(playlist)}
     </div>;
 
-
 const renderTracks = tracks => {
-    console.log(tracks);
     return tracks.map(track => <TrackListItem track={track}/>);
 };
 
@@ -38,13 +34,13 @@ const millisToMinutesAndSeconds = (millis) => {
 };
 
 // On true, render a unfavorite icon, on false, render a start, on null, render nothing
-const renderFavorite = (playlist, toggleFavorite) => {
-    if (!playlist.isAuthor) {
-        if (playlist.isFavorited) {
-            return (<i onClick={() => toggleFavorite(playlist.id)}
+const renderFavorite = (playlist, isFavorited, isAuthor, toggleFavorite) => {
+    if (!isAuthor) {
+        if (isFavorited) {
+            return (<i onClick={() => toggleFavorite(playlist)}
                        className='mt-3 mr-3 fa-lg fas fa-minus-circle float-right music-share-icon'/>);
-        } else if (playlist.isFavorited != null) {
-            return (<i onClick={() => toggleFavorite(playlist.id)}
+        } else if (isFavorited != null) {
+            return (<i onClick={() => toggleFavorite(playlist)}
                        className='mt-3 mr-3 fa-lg fas fa-star float-right music-share-icon'/>);
         }
     }
@@ -61,7 +57,7 @@ const renderAuthorIcons = isAuthor => {
             </div>
         );
     }
-}
+};
 
 const renderStats = (playlist) => {
     return (
@@ -73,6 +69,6 @@ const renderStats = (playlist) => {
             {playlist.danceability ? `  danceability: ${playlist.danceability}  ` : ''}
         </h5>
     )
-}
+};
 
 export default PlaylistItem;
