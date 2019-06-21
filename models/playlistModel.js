@@ -104,8 +104,7 @@ Playlist.create  = (user, playlist, res) => {
 
             console.log(entries);
 
-            // Get albums genres
-            Album.getGenres(albumsIds);
+
             Song.getAudioFeatures(songsIds);
 
             setTimeout(() => {sql.query(entries, (err, result) => {
@@ -129,7 +128,9 @@ Playlist.create  = (user, playlist, res) => {
 
 Playlist.getRecent = (res) => {
 
-    let query = "SELECT playlist.playlistId, playlist.name as playlist, owner, title, s.length, album.name, artist.name FROM playlist\n" +
+    let query = "SELECT playlist.playlistId, playlist.name as playlist, owner, title, s.length, album.name, artist.name," +
+        " playlist.tempo, playlist.energy, playlist.valence, playlist.loudness," +
+        " s.tempo as songTempo, s.valence as songValence, s.loudness as songLoudness, s.energy as songEnergy FROM playlist\n" +
         "  INNER JOIN playlistEntry pE on playlist.playlistId = pE.playlistId\n" +
         "  INNER JOIN songs s on pE.songId = s.songId\n" +
         "  INNER JOIN albums album on s.albumId = album.albumId\n" +
@@ -147,10 +148,20 @@ Playlist.getRecent = (res) => {
         //     name: 'Joji' }
 
 
-    let playlists = {};
 
+        let playlists = {};
 
         result.forEach((playlist) => {
+
+
+            // owner: 'jose',
+            //     title: 'TEST DRIVE',
+            //     length: 179423,
+            //     name: 'Joji',
+            //     tempo: 75,
+            //     energy: 0.648,
+            //     valence: 0.466,
+            //     loudness: -8.602 }
 
             console.log(playlist);
 
@@ -160,7 +171,11 @@ Playlist.getRecent = (res) => {
                 playlists[playlistId] = {
                     name: playlist.playlist,
                     author: playlist.owner,
-                    tracks: []
+                    tracks: [],
+                    energy: playlist.energy,
+                    tempo: playlist.tempo,
+                    loudness: playlist.loudness,
+                    valence: playlist.valence
                 }
             }
 
@@ -168,6 +183,10 @@ Playlist.getRecent = (res) => {
                 name: playlist.title,
                 artist: playlist.name,
                 length: playlist.length,
+                tempo: playlist.songTempo,
+                energy: playlist.songEnergy,
+                valence: playlist.songValence,
+                loudness: playlist.loudness
             })
 
         });

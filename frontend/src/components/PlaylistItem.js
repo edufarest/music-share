@@ -11,10 +11,13 @@ const PlaylistItem = ({playlist, isAuthor, isFavorited, toggleFavorite}) =>
         <ul className='mb-3 list-group music-share-track-list overflow-auto'>
             <li className='list-group-item list-group-item-dark sticky-top'>
                 <div className='row'>
-                    <span className='col-4'>Track Name</span>
+                    <span className='col-3'>Track Name</span>
                     <span className='col-3'>Artist</span>
-                    <span className='col-2'>Length</span>
-                    <span className='col-3'>Genre</span>
+                    <span className='col-1'>Length</span>
+                    <span className='col-1'>Tempo</span>
+                    <span className='col-2'>Loudness</span>
+                    <span className='col-1'>Energy</span>
+                    <span className='col-1'>Valence</span>
                 </div>
             </li>
             {renderTracks(playlist.tracks)}
@@ -23,6 +26,8 @@ const PlaylistItem = ({playlist, isAuthor, isFavorited, toggleFavorite}) =>
     </div>;
 
 const renderTracks = tracks => {
+    console.log("track:");
+    console.log(tracks);
     return tracks.map(track => <TrackListItem track={track}/>);
 };
 
@@ -64,9 +69,10 @@ const renderStats = (playlist) => {
         <h5 className='my-3 pl-3'>
             {playlist.length ? `length: ${millisToMinutesAndSeconds(playlist.length)}  ` : ''}
             {playlist.primaryGenre ? `  primary genre: ${playlist.primaryGenre}  ` : ''}
-            {playlist.loudness ? `  loudness: ${playlist.loudness}  ` : ''}
-            {playlist.happiness ? `  happiness: ${playlist.happiness}  ` : ''}
-            {playlist.danceability ? `  danceability: ${playlist.danceability}  ` : ''}
+            {playlist.loudness ? `  loudness: ${playlist.loudness} dB ` : ''}
+            {playlist.valence ? `  valence: ${playlist.valence}  ` : ''}
+            {playlist.tempo ? `  tempo: ${playlist.tempo}  ` : ''}
+            {playlist.energy ? `  energy: ${playlist.energy}  ` : ''}
         </h5>
     )
 };

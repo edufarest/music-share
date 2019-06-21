@@ -168,6 +168,9 @@ end //
 
 select * from artists;
 
+select * from playlist;
+delete from playlist where true;
+
 select playlist.*, s.title, s.energy as sEnergy, s.loudness as sLoudness, s.valence as sValence, s.length as sLength  from playlist inner join favPlaylist fP on playlist.playlistId = fP.playlistId and username = 'jose'
                         inner join playlistEntry pE on playlist.playlistId = pE.playlistId
                         inner join songs s on pE.songId = s.songId;

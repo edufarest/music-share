@@ -89,7 +89,7 @@ module.exports = {
                     }
                 }).then((res) => {
                     res.json().then((res) => {
-                        console.log(res.artists[0].genres);
+                        console.log(res);
                     })
                 })
 
