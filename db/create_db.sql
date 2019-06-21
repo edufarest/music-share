@@ -84,6 +84,10 @@ CREATE TABLE playlist (
                         length       INT NOT NULL DEFAULT 0,
                         primaryGenre VARCHAR(255) DEFAULT '',
                         owner        VARCHAR(255) NOT NULL,
+                        tempo       INT,
+                        energy      FLOAT,
+                        valence     FLOAT,
+                        loudness    FLOAT,
                         FOREIGN KEY (owner) REFERENCES users(username)
 );
 
@@ -115,8 +119,19 @@ CREATE TRIGGER after_entry_update
   AFTER INSERT ON playlistEntry
   FOR EACH ROW
 BEGIN
+
   UPDATE songs SET timesUsed = timesUsed + 1
   WHERE songId=NEW.songId;
+
+  SET @tempo := (select avg(s.tempo) from playlist inner join playlistEntry pE on playlist.playlistId = pE.playlistId
+    inner join songs s on pE.songId = s.songId
+    WHERE playlist.playlistId=NEW.playlistId
+    group by playlist.playlistId);
+
+  UPDATE playlist
+    SET tempo = @tempo
+    WHERE playlistId=NEW.playlistId;
+
 end //
 
 CREATE TRIGGER after_playlist_delete
@@ -134,4 +149,15 @@ BEGIN
   WHERE songId=OLD.songId;
 end //
 
-DELIMITER ;
+
+select avg(s.tempo), avg(s.valence), avg(s.energy), avg(s.loudness) from playlist inner join playlistEntry pE on playlist.playlistId = pE.playlistId
+inner join songs s on pE.songId = s.songId group by playlist.playlistId;
+
+
+SELECT playlist.playlistId, playlist.name as playlist, owner, title, s.length,
+       album.name, artist.name, playlist.tempo, playlist.valence, playlist.energy, playlist.loudness FROM playlist
+          INNER JOIN playlistEntry pE on playlist.playlistId = pE.playlistId
+          INNER JOIN songs s on pE.songId = s.songId
+          INNER JOIN albums album on s.albumId = album.albumId
+          INNER JOIN artists artist on album.authorId = artist.artistId
+          ORDER BY playlist.playlistId DESC LIMIT 20;

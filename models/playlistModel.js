@@ -100,6 +100,9 @@ Playlist.create  = (user, playlist, res) => {
             console.log(entries);
 
             sql.query(entries, (err, result) => {
+
+                console.log(err);
+
                 if (err) {
                     res(err, null)
                 } else {
