@@ -67,6 +67,18 @@ class CreatePlaylist extends React.Component {
         this.setState({workingPlaylist: this.state.workingPlaylist});
     };
 
+    removeSong = (id) => {
+
+        let filteredTracks = this.state.workingPlaylist.tracks.filter((track) => {
+            return track.id != id;
+        })
+
+        let workingPlaylist = this.state.workingPlaylist;
+        workingPlaylist.tracks = filteredTracks;
+
+        this.setState({workingPlaylist: workingPlaylist});
+    }
+
     render() {
         if (!this.props.user) {
             return (
@@ -78,7 +90,7 @@ class CreatePlaylist extends React.Component {
             <div className='mt-4 container'>
                 <h2>Create A Playlist</h2>
                 <div>
-                    <PlaylistItem playlist={this.state.workingPlaylist}/>
+                    <PlaylistItem playlist={this.state.workingPlaylist} isEditing={true} removeSong={(id)=>{this.removeSong(id)}}/>
                 </div>
                 <h4 className='mt-3'>Playlist Name</h4>
                 <input className='my-3 form-control'

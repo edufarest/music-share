@@ -4,7 +4,7 @@ import TrackListItem from './TrackListItem'
 
 const PLAYLIST_API = "http://localhost:8000/playlists/";
 
-const PlaylistItem = ({playlist, isAuthor, isFavorited, toggleFavorite}) =>
+const PlaylistItem = ({playlist, isAuthor, isFavorited, toggleFavorite, isEditing, removeSong}) =>
     <div className='music-share-playlist music-share-text bg-dark'>
         {renderAuthorIcons(isAuthor, playlist)}
         {renderFavorite(playlist, isFavorited, isAuthor, toggleFavorite)}
@@ -14,24 +14,24 @@ const PlaylistItem = ({playlist, isAuthor, isFavorited, toggleFavorite}) =>
             <li className='list-group-item list-group-item-dark sticky-top'>
                 <div className='row'>
                     <span className='col-3'>Track Name</span>
-                    <span className={isAuthor ? 'col-2' : 'col-3'}>Artist</span>
+                    <span className={(isAuthor || isEditing) ? 'col-2' : 'col-3'}>Artist</span>
                     <span className='col-1'>Length</span>
                     <span className='col-1'>Tempo</span>
                     <span className='col-2'>Loudness</span>
                     <span className='col-1'>Energy</span>
                     <span className='col-1'>Valence</span>
-                    {isAuthor && <span className='col-1'></span>}
+                    {(isAuthor || isEditing) && <span className='col-1'>Delete</span>}
                 </div>
             </li>
-            {renderTracks(playlist.tracks, playlist.id, isAuthor)}
+            {renderTracks(playlist.tracks, playlist.id, isAuthor, isEditing, removeSong)}
         </ul>
         {renderStats(playlist)}
     </div>;
 
-const renderTracks = (tracks, playlistId, isAuthor) => {
+const renderTracks = (tracks, playlistId, isAuthor, isEditing, removeSong) => {
     console.log("track:");
     console.log(tracks);
-    return tracks.map(track => <TrackListItem track={track} playlistId={playlistId} isAuthor={isAuthor}/>);
+    return tracks.map(track => <TrackListItem track={track} playlistId={playlistId} isAuthor={isAuthor} isEditing={isEditing} removeSong={removeSong}/>);
 };
 
 // Obtained from https://stackoverflow.com/questions/21294302/converting-milliseconds-to-minutes-and-seconds-with-javascript

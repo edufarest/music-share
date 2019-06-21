@@ -240,16 +240,59 @@ Playlist.favorite = (id, user, isFavorite, res) => {
 
 Playlist.getFavorites = (user, res) => {
 
-    let query = "select playlist.*, s.title, s.energy as sEnergy, s.loudness as sLoudness, s.valence as sValence, s.length as sLength  from playlist inner join favPlaylist fP on playlist.playlistId = fP.playlistId and username = ? \n" +
+    let query = "select playlist.*, s.title, s.tempo as sTempo, s.energy as sEnergy, s.loudness as sLoudness, s.valence as sValence, s.length as sLength  from playlist inner join favPlaylist fP on playlist.playlistId = fP.playlistId and username = ? \n" +
         "                        inner join playlistEntry pE on playlist.playlistId = pE.playlistId\n" +
         "                        inner join songs s on pE.songId = s.songId"
 
 
     sql.query(query,
         user, (err, result) => {
+
             let playlists = {};
 
-            // console.log(playlists);
+            result.forEach((playlist) => {
+
+
+                // owner: 'jose',
+                //     title: 'TEST DRIVE',
+                //     length: 179423,
+                //     name: 'Joji',
+                //     tempo: 75,
+                //     energy: 0.648,
+                //     valence: 0.466,
+                //     loudness: -8.602 }
+
+                console.log("PLaylist");
+                console.log(playlist);
+
+                let playlistId = playlist.playlistId;
+
+                if (!playlists[playlistId]) {
+                    playlists[playlistId] = {
+                        name: playlist.playlist,
+                        author: playlist.owner,
+                        tracks: [],
+                        energy: playlist.energy,
+                        tempo: playlist.tempo,
+                        loudness: playlist.loudness,
+                        valence: playlist.valence
+                    }
+                }
+
+                playlists[playlistId].tracks.push({
+                    name: playlist.title,
+                    artist: playlist.name,
+                    length: playlist.sLength,
+                    tempo: playlist.sTempo,
+                    energy: playlist.sEnergy,
+                    valence: playlist.sValence,
+                    loudness: playlist.sLoudness,
+                    songId: playlist.songId
+                })
+
+            });
+
+            console.log(playlists);
 
             err ? res(err, null) : res(null, playlists);
         });
