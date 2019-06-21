@@ -3,6 +3,7 @@ use musicshare;
 -- Uncomment to be able to drop tables and run the entire script
 SET FOREIGN_KEY_CHECKS = 0;
 
+DROP TABLE IF EXISTS favPlaylist;
 DROP TABLE IF EXISTS playlistEntry;
 DROP TABLE IF EXISTS playlist;
 DROP TABLE IF EXISTS songs;
@@ -99,6 +100,14 @@ CREATE TABLE playlistEntry (
                              songId      VARCHAR(255) NOT NULL,
                              FOREIGN KEY (playlistId) REFERENCES playlist(playlistId),
                              FOREIGN KEY (songId)     REFERENCES songs(songId)
+);
+
+CREATE TABLE favPlaylist (
+                            favoriteId  INT PRIMARY KEY AUTO_INCREMENT,
+                            playlistId  INT NOT NULL,
+                            username    VARCHAR(255) not null,
+                            FOREIGN KEY (playlistId) REFERENCES playlist(playlistId),
+                            FOREIGN KEY (username)   REFERENCES users(username)
 );
 
 
