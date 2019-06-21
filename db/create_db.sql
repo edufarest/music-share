@@ -132,16 +132,24 @@ BEGIN
   UPDATE songs SET timesUsed = timesUsed + 1
   WHERE songId=NEW.songId;
 
-  SET @tempo := (select avg(s.tempo) from playlist inner join playlistEntry pE on playlist.playlistId = pE.playlistId
-    inner join songs s on pE.songId = s.songId
-    WHERE playlist.playlistId=NEW.playlistId
-    group by playlist.playlistId);
+  SET @tempo := (select avg(songs.tempo) from songs inner join playlistEntry pE on songs.songId = pE.songId and pE.playlistId = NEW.playlistId
+    group by playlistId);
+
+  SET @energy := (select avg(songs.energy) from songs inner join playlistEntry pE on songs.songId = pE.songId and pE.playlistId = NEW.playlistId
+                 group by playlistId);
+
+  SET @valence := (select avg(songs.valence) from songs inner join playlistEntry pE on songs.songId = pE.songId and pE.playlistId = NEW.playlistId
+                 group by playlistId);
+
+  SET @loudness := (select avg(songs.loudness) from songs inner join playlistEntry pE on songs.songId = pE.songId and pE.playlistId = NEW.playlistId
+                 group by playlistId);
 
   UPDATE playlist
-    SET tempo = @tempo
+    SET tempo = @tempo, energy = @energy, valence = @valence, loudness = @loudness
     WHERE playlistId=NEW.playlistId;
 
 end //
+
 
 CREATE TRIGGER after_playlist_delete
   AFTER DELETE ON playlist
@@ -157,19 +165,3 @@ BEGIN
   UPDATE songs SET timesUsed = timesUsed - 1
   WHERE songId=OLD.songId;
 end //
-
-
-select avg(s.tempo), avg(s.valence), avg(s.energy), avg(s.loudness) from playlist inner join playlistEntry pE on playlist.playlistId = pE.playlistId
-inner join songs s on pE.songId = s.songId group by playlist.playlistId;
-
-
-SELECT playlist.playlistId, playlist.name as playlist, owner, title, s.length,
-       album.name, artist.name, playlist.tempo, playlist.valence, playlist.energy, playlist.loudness FROM playlist
-          INNER JOIN playlistEntry pE on playlist.playlistId = pE.playlistId
-          INNER JOIN songs s on pE.songId = s.songId
-          INNER JOIN albums album on s.albumId = album.albumId
-          INNER JOIN artists artist on album.authorId = artist.artistId
-          ORDER BY playlist.playlistId DESC LIMIT 20;
-
-
-select * from playlist inner join favPlaylist fP on playlist.playlistId = fP.playlistId and username = 'jose';

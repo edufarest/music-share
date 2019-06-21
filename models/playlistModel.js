@@ -93,25 +93,26 @@ Playlist.create  = (user, playlist, res) => {
             playlist.tracks.forEach((track) => {
                 entries += `(${result.insertId}, '${track.id}'), `
                 songsIds.push(track.id);
-            })
+            });
 
             entries = entries.substr(0, entries.length - 2) + "; \n"
 
             console.log(entries);
 
-            sql.query(entries, (err, result) => {
+            Song.getAudioFeatures(songsIds);
+
+            setTimeout(() => {sql.query(entries, (err, result) => {
 
                 console.log(err);
 
                 if (err) {
                     res(err, null)
                 } else {
-
-                    Song.getAudioFeatures(songsIds);
-
                     res(null, result)
                 };
-            })
+            })}, 1000);
+
+
 
         })
     });
@@ -215,6 +216,8 @@ Playlist.getFavorites = (user, res) => {
         user, (err, result) => {
             err ? res(err, null) : res(null, result);
         })
-}
+};
+
+
 
 module.exports = Playlist;
