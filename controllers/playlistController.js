@@ -39,6 +39,18 @@ module.exports = {
         Playlist.delete(req.params.id, (err, result) => {
             err ? res.send(err) : res.send(result);
         })
+    },
+
+    favorite: (req, res) => {
+        Playlist.favorite(req.params.id, req.params.username, true, (err, result) => {
+            err ? res.send(err) : res.send(result);
+        })
+    },
+
+    disfavorite: (req, res) => {
+        Playlist.favorite(req.params.id, req.params.username, false, (err, result) => {
+            err ? res.send(err) : res.send(result);
+        })
     }
 
 };

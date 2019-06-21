@@ -7,6 +7,10 @@ router.get('/', playlist.list_recent);
 
 router.post('/:username', playlist.create);
 
+router.post('/fav/:id/:username', playlist.favorite);
+
+router.delete('/fav/:id/:username', playlist.disfavorite)
+
 router.get('/:id', playlist.get_playlist);
 
 router.post('/:id/:songId', playlist.add_song);
