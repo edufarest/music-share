@@ -2,9 +2,11 @@ import React from 'react'
 import '../styles/PlaylistListItem.css'
 import TrackListItem from './TrackListItem'
 
+const PLAYLIST_API = "http://localhost:8000/playlists/";
+
 const PlaylistItem = ({playlist, isAuthor, isFavorited, toggleFavorite}) =>
     <div className='music-share-playlist music-share-text bg-dark'>
-        {renderAuthorIcons(isAuthor)}
+        {renderAuthorIcons(isAuthor, playlist)}
         {renderFavorite(playlist, isFavorited, isAuthor, toggleFavorite)}
         <h3 className='mt-2 ml-3'>{playlist.name}</h3>
         <h5 className='mt-2 mb-3 ml-3'> Created by:  {playlist.author}</h5>
@@ -51,11 +53,19 @@ const renderFavorite = (playlist, isFavorited, isAuthor, toggleFavorite) => {
     }
 };
 
-const renderAuthorIcons = isAuthor => {
+const deletePlaylist = (id) => {
+
+    fetch(PLAYLIST_API + id, {
+        method: 'DELETE',
+    }).then(window.location.reload())
+
+}
+
+const renderAuthorIcons = (isAuthor, playlist) => {
     if (isAuthor) {
         return (
             <div>
-                <i onClick={() => console.log('delete')}
+                <i onClick={() => {deletePlaylist(playlist.id)}}
                    className='mt-2 pr-3 fa-2x fas fa-times float-right music-share-icon'/>
                 <i onClick={() => console.log('edit')}
                    className='mt-3 px-2 fa-lg fas fa-pencil-alt float-right music-share-icon'/>
