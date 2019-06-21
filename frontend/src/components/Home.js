@@ -68,6 +68,9 @@ export default class Home extends React.Component {
             this.setState({favoritePlaylists: playlists});
 
             this.playlistService.getRecent().then((res) => {
+
+                console.log(res);
+
                 let playlists = [];
                 for (let i in res) {
                     res[i].id = i;

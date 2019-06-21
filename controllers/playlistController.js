@@ -24,13 +24,13 @@ module.exports = {
     },
 
     add_song: (req, res) => {
-        Playlist.addSong(req.params.songId, req.params.id, (err, result) => {
+        Playlist.addSong(req.params.id, req.params.songId, (err, result) => {
             err ? res.send(err) : res.send(result);
         })
     },
 
     remove_song: (req, res) => {
-        Playlist.removeSong(req.params.songId, req.params.id, (err, result) => {
+        Playlist.removeSong(req.params.id, req.params.songId, (err, result) => {
             err ? res.send(err) : res.send(result);
         })
     },

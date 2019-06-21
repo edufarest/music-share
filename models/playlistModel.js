@@ -129,7 +129,7 @@ Playlist.create  = (user, playlist, res) => {
 Playlist.getRecent = (res) => {
 
     let query = "SELECT playlist.playlistId, playlist.name as playlist, owner, title, s.length, album.name, artist.name," +
-        " playlist.tempo, playlist.energy, playlist.valence, playlist.loudness," +
+        " playlist.tempo, playlist.energy, playlist.valence, playlist.loudness, s.songId," +
         " s.tempo as songTempo, s.valence as songValence, s.loudness as songLoudness, s.energy as songEnergy FROM playlist\n" +
         "  INNER JOIN playlistEntry pE on playlist.playlistId = pE.playlistId\n" +
         "  INNER JOIN songs s on pE.songId = s.songId\n" +
@@ -163,6 +163,7 @@ Playlist.getRecent = (res) => {
             //     valence: 0.466,
             //     loudness: -8.602 }
 
+            console.log("PLaylist");
             console.log(playlist);
 
             let playlistId = playlist.playlistId;
@@ -186,7 +187,8 @@ Playlist.getRecent = (res) => {
                 tempo: playlist.songTempo,
                 energy: playlist.songEnergy,
                 valence: playlist.songValence,
-                loudness: playlist.loudness
+                loudness: playlist.loudness,
+                songId: playlist.songId
             })
 
         });
