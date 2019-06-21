@@ -254,9 +254,7 @@ Playlist.getFavorites = (user, res) => {
             console.log(playlists);
 
             err ? res(err, null) : res(null, playlists);
-        })
-
-        })
+        });
 };
 
 
