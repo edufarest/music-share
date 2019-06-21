@@ -228,30 +228,7 @@ Playlist.getFavorites = (user, res) => {
         user, (err, result) => {
             let playlists = {};
 
-
-            result.forEach((playlist) => {
-
-                console.log(playlist);
-
-                let playlistId = playlist.playlistId;
-
-                if (!playlists[playlistId]) {
-                    playlists[playlistId] = {
-                        name: playlist.playlist,
-                        author: playlist.owner,
-                        tracks: []
-                    }
-                }
-
-                playlists[playlistId].tracks.push({
-                    name: playlist.title,
-                    artist: playlist.name,
-                    length: playlist.length,
-                })
-
-            });
-
-            console.log(playlists);
+            // console.log(playlists);
 
             err ? res(err, null) : res(null, playlists);
         });
