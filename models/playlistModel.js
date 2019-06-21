@@ -195,7 +195,18 @@ Playlist.delete = (id, res) => {
 };
 
 Playlist.favorite = (id, user, isFavorite, res) => {
-    sql.query('INSERT INTO favPlaylist (playlistId, username) VALUES ()')
+
+    let query = "";
+
+    if (isFavorite) {
+        query = `INSERT INTO favPlaylist (playlistId, username) VALUES ('${id}', '${user}')`
+    } else {
+        query = `DELETE FROM favPlaylist WHERE username='${user}' AND playlistId='${id}'`
+    }
+
+    sql.query(query, (err, result) => {
+        err ? res(err, null) : res(null, result);
+    })
 }
 
 module.exports = Playlist;

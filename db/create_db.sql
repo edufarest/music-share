@@ -170,3 +170,6 @@ SELECT playlist.playlistId, playlist.name as playlist, owner, title, s.length,
           INNER JOIN albums album on s.albumId = album.albumId
           INNER JOIN artists artist on album.authorId = artist.artistId
           ORDER BY playlist.playlistId DESC LIMIT 20;
+
+
+select * from favPlaylist;
