@@ -2,7 +2,8 @@
 
 const sql = require('../db.js');
 
-let Song = require('../controllers/songController');
+const Song = require('../controllers/songController');
+const Album= require('../controllers/albumController');
 
 
 let Playlist = (playlist) => {
@@ -43,12 +44,13 @@ Playlist.create  = (user, playlist, res) => {
     //         img:
     //         'https://i.scdn.co/image/4988546859334f9a5a3fa4acedc5aea275929026' } }
 
+    let albumsIds = [];
+
     let artistQuery = "INSERT IGNORE INTO artists (artistId, name) VALUES ";
 
     // TODO Fetch genres
     let albumQuery = "INSERT IGNORE INTO albums (albumId, name, releaseDate, genre1, genre2, genre3, authorId, image)  VALUES ";
 
-    // TODO Fetch
     let songQuery  = "INSERT IGNORE INTO songs (songId, title, length, tempo, energy, valence, genre1, genre2, genre3, releaseDate, timesUsed, albumId, artistId) VALUES ";
     playlist.tracks.forEach((track) => {
 
@@ -59,9 +61,12 @@ Playlist.create  = (user, playlist, res) => {
             authorId: track.artistId, image: track.album.img};
         albumQuery += `('${album.id}', '${album.name}', '${album.releaseDate}', '', '', '', '${album.authorId}', '${album.img}'), `;
 
+        albumsIds.push(track.album.id);
+
         songQuery += `('${track.id}', "${track.name}", ${track.length}, 0, 0, 0, '', '', '', '${track.album.releaseDate}',
          0, '${track.album.id}', '${track.artistId}'), `
     });
+
 
     // Remove trailing comma and end query
     artistQuery = artistQuery.substr(0, artistQuery.length - 2) + "; \n";
@@ -99,6 +104,8 @@ Playlist.create  = (user, playlist, res) => {
 
             console.log(entries);
 
+            // Get albums genres
+            Album.getGenres(albumsIds);
             Song.getAudioFeatures(songsIds);
 
             setTimeout(() => {sql.query(entries, (err, result) => {
@@ -212,9 +219,43 @@ Playlist.favorite = (id, user, isFavorite, res) => {
 
 Playlist.getFavorites = (user, res) => {
 
-    sql.query('select * from playlist inner join favPlaylist fP on playlist.playlistId = fP.playlistId and username = ?',
+    let query = "select playlist.*, s.title, s.energy as sEnergy, s.loudness as sLoudness, s.valence as sValence, s.length as sLength  from playlist inner join favPlaylist fP on playlist.playlistId = fP.playlistId and username = ? \n" +
+        "                        inner join playlistEntry pE on playlist.playlistId = pE.playlistId\n" +
+        "                        inner join songs s on pE.songId = s.songId"
+
+
+    sql.query(query,
         user, (err, result) => {
-            err ? res(err, null) : res(null, result);
+            let playlists = {};
+
+
+            result.forEach((playlist) => {
+
+                console.log(playlist);
+
+                let playlistId = playlist.playlistId;
+
+                if (!playlists[playlistId]) {
+                    playlists[playlistId] = {
+                        name: playlist.playlist,
+                        author: playlist.owner,
+                        tracks: []
+                    }
+                }
+
+                playlists[playlistId].tracks.push({
+                    name: playlist.title,
+                    artist: playlist.name,
+                    length: playlist.length,
+                })
+
+            });
+
+            console.log(playlists);
+
+            err ? res(err, null) : res(null, playlists);
+        })
+
         })
 };
 

@@ -165,3 +165,9 @@ BEGIN
   UPDATE songs SET timesUsed = timesUsed - 1
   WHERE songId=OLD.songId;
 end //
+
+select * from artists;
+
+select playlist.*, s.title, s.energy as sEnergy, s.loudness as sLoudness, s.valence as sValence, s.length as sLength  from playlist inner join favPlaylist fP on playlist.playlistId = fP.playlistId and username = 'jose'
+                        inner join playlistEntry pE on playlist.playlistId = pE.playlistId
+                        inner join songs s on pE.songId = s.songId;

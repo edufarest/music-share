@@ -58,7 +58,7 @@ module.exports = {
             err ? res.send(err) : res.send(result);
 
         })
-    }
+    },
 
 
 

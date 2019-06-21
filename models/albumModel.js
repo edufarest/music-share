@@ -2,6 +2,8 @@
 
 const sql = require('../db.js');
 
+const fetch = require('node-fetch');
+
 let Album = (album) => {
     this.albumId     = album.albumId;
     this.name        = album.name;
@@ -53,5 +55,6 @@ Album.delete = (id, result) => {
         respond(err, res, result);
     })
 };
+
 
 module.exports = Album;

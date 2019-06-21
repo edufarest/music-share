@@ -64,6 +64,37 @@ module.exports = {
             res.json(artist);
         })
 
+    },
+
+    getGenres: (ids) => {
+        let url = "https://api.spotify.com/v1/artists/?ids=" + ids.join(",");
+
+        let uri = "https://accounts.spotify.com/api/token";
+
+
+        fetch(uri, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Basic ${process.env.ACCESSTOKEN}`
+            },
+            body: "grant_type=client_credentials",
+        }).then((response) => {
+            response.json().then((res) => {
+                let token = res.access_token;
+
+                fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }).then((res) => {
+                    res.json().then((res) => {
+                        console.log(res.artists[0].genres);
+                    })
+                })
+
+            })
+        });
     }
 
 
